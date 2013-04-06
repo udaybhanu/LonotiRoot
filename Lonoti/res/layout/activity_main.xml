@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp" >
+
+    <EditText
+        android:id="@+id/editUsername"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="62dp"
+        android:ems="10"
+        android:hint="@string/username">
+        
+        <requestFocus />
+         
+     </EditText>
+
+    <EditText
+        android:id="@+id/editPassword"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editUsername"
+        android:layout_below="@+id/editUsername"
+        android:layout_marginTop="22dp"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword" >
+
+    </EditText>
+
+        <EditText
+        android:id="@+id/textReEnterPassword"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editPassword"
+        android:layout_below="@+id/editPassword"
+        android:layout_marginTop="22dp"
+        android:ems="10"
+        android:hint="@string/re_enter"
+        android:inputType="textPassword" 
+        android:visibility="gone"
+        />
+    
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textReEnterPassword"
+        android:layout_below="@+id/textReEnterPassword"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="22dp"
+        android:text="@string/Login" />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/loginButton"
+        android:layout_alignBottom="@+id/loginButton"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="22dp"
+        android:layout_toRightOf="@+id/loginButton"
+        android:text="@string/Register" />
+
+
+</RelativeLayout>
