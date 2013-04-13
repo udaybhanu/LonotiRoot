@@ -26,7 +26,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     @Override
     protected void onRegistered(Context context, String registrationId) {
         Log.i(TAG, "Device registered: regId = " + registrationId);
-        //TODO Add login/register requests here
+        //TODO Decision on sending registration id to server based on auth token
     }
  
     /**

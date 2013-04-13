@@ -12,5 +12,7 @@
     <string name="title_activity_home">Lonoti Home</string>
     <string name="title_activity_envent">EnventActivity</string>
     <string name="title_activity_notifications">NotificationsActivity</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="sign_in">SignIn</string>
 
 </resources>

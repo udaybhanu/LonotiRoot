@@ -8,6 +8,7 @@ import com.google.android.gcm.GCMRegistrar;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -15,13 +16,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		// Make sure the device has the proper dependencies.
+		/*// Make sure the device has the proper dependencies.
         GCMRegistrar.checkDevice(this);
         // Make sure the manifest was properly set
         GCMRegistrar.checkManifest(this);
@@ -29,6 +30,7 @@ public class MainActivity extends Activity {
 		final Button button = (Button) findViewById(R.id.loginButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+            	
             	String regId = GCMRegistrar.getRegistrationId(MainActivity.this);
             	// Check if regid already presents
                 if (regId.equals("")) {
@@ -53,8 +55,8 @@ public class MainActivity extends Activity {
         final Button register = (Button) findViewById(R.id.registerButton);
         register.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                /*Intent intent = new Intent(getBaseContext(), HomeActivity.class);
-                startActivity(intent);*/
+                Intent intent = new Intent(getBaseContext(), HomeActivity.class);
+                startActivity(intent);
             	TextView reEnter = (TextView) findViewById(R.id.textReEnterPassword);
             	if(reEnter.getVisibility() == View.GONE){
             		reEnter.setVisibility(View.VISIBLE);
@@ -87,7 +89,7 @@ public class MainActivity extends Activity {
             	}
             }
         });
-	}
+*/	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

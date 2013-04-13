@@ -10,6 +10,7 @@ import android.app.FragmentTransaction;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.view.View;
 import android.widget.TabHost;
 
 @SuppressLint("NewApi")
@@ -34,7 +35,9 @@ public class HomeActivity extends FragmentActivity {
 		TabListener<EventActivity> tl = new TabListener<EventActivity>(this,
 				label1, EventActivity.class);
 		tab.setTabListener(tl);
+		
 		actionBar.addTab(tab);
+		
 		String label2 = "Notifications";
 		tab = actionBar.newTab();
 		tab.setText(label2);
