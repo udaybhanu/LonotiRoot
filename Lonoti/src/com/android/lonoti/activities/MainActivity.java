@@ -1,13 +1,22 @@
 package com.android.lonoti.activities;
 
 import static com.android.lonoti.Config.SENDER_ID;
+
+import java.util.List;
+
 import com.android.lonoti.HomeActivity;
 import com.android.lonoti.R;
+import com.android.lonoti.dbhelper.DatabaseHelper;
+import com.android.lonoti.dbhelper.SimpleData;
 import com.google.android.gcm.GCMRegistrar;
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.SQLException;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -17,10 +26,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity {
+	
+	private final String LOG_TAG = getClass().getSimpleName();
+	private static DatabaseHelper databaseHelper = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setDBHelper();
+		//See following commented function function to know how to retrieve data from a table
+		//One can access This function from any where to get data from DB
+		//getDBData();
 		setContentView(R.layout.activity_main);
 		
 		/*// Make sure the device has the proper dependencies.
@@ -91,6 +107,54 @@ public class MainActivity extends FragmentActivity {
             }
         });
 */	}
+	
+	private void setDBHelper()
+	{
+		if (databaseHelper == null) {
+			databaseHelper = OpenHelperManager.getHelper(this, DatabaseHelper.class);
+		}
+	}
+	public static DatabaseHelper getDBHelper() {
+		return databaseHelper;
+	}
+	
+	private void getDBData(){
+		try {
+			Dao<SimpleData, Integer> simpleDao = null;
+			try {
+				simpleDao = MainActivity.getDBHelper().getSimpleDataDao();
+			} catch (java.sql.SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(simpleDao == null)
+			{
+				return;
+			}
+			
+			// query for all of the data objects in the database
+			List<SimpleData> list = null;
+			try {
+				list = simpleDao.queryForAll();
+			} catch (java.sql.SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(list == null)
+			{
+				return;
+			}
+			for (SimpleData simple : list)
+			{
+				Log.i(LOG_TAG, "entry from table simple(" + simple + ")");
+			}
+		}
+		catch (SQLException e) {
+			Log.e(LOG_TAG, "Database exception", e);
+			return;
+		}
+		
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
