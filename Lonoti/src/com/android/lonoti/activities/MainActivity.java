@@ -22,6 +22,7 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
 		/*// Make sure the device has the proper dependencies.
         GCMRegistrar.checkDevice(this);
         // Make sure the manifest was properly set

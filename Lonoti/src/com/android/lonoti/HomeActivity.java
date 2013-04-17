@@ -1,5 +1,6 @@
 package com.android.lonoti;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -26,25 +27,27 @@ public class HomeActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//setContentView(R.layout.activity_home);
-		ActionBar actionBar = getActionBar();
-		
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		String label1 = "Events";
-		Tab tab = actionBar.newTab();
-		tab.setText(label1);
-		TabListener<EventActivity> tl = new TabListener<EventActivity>(this,
-				label1, EventActivity.class);
-		tab.setTabListener(tl);
-		
-		actionBar.addTab(tab);
-		
-		String label2 = "Notifications";
-		tab = actionBar.newTab();
-		tab.setText(label2);
-		TabListener<NotificationsActivity> tl2 = new TabListener<NotificationsActivity>(this,
-				label2, NotificationsActivity.class);
-		tab.setTabListener(tl2);
-		actionBar.addTab(tab);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			ActionBar actionBar = getActionBar();
+			
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+			String label1 = "Events";
+			Tab tab = actionBar.newTab();
+			tab.setText(label1);
+			TabListener<EventActivity> tl = new TabListener<EventActivity>(this,
+					label1, EventActivity.class);
+			tab.setTabListener(tl);
+			
+			actionBar.addTab(tab);
+			
+			String label2 = "Notifications";
+			tab = actionBar.newTab();
+			tab.setText(label2);
+			TabListener<NotificationsActivity> tl2 = new TabListener<NotificationsActivity>(this,
+					label2, NotificationsActivity.class);
+			tab.setTabListener(tl2);
+			actionBar.addTab(tab);
+		}
 	}
 
 	@Override

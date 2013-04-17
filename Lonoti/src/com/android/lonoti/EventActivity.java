@@ -1,17 +1,28 @@
 package com.android.lonoti;
 
+import java.util.ArrayList;
+
+import com.android.lonoti.adapter.EventListAdapter;
+import com.android.lonoti.adapter.data.EventRowData;
+
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 @SuppressLint("NewApi")
-public class EventActivity extends Fragment {
+public class EventActivity extends ListFragment {
 
+	//EventListAdapter adapter = null;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -23,11 +34,49 @@ public class EventActivity extends Fragment {
 	}
 	
 	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onActivityCreated(savedInstanceState);
+		setListAdapter(new EventListAdapter(getActivity(), R.layout.event_row, getEventRowList()));
+	    getListView().setTextFilterEnabled(true);
+	}
+	
+	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		// TODO Auto-generated method stub
-		inflater.inflate(R.menu.envent, menu);
 		//View v = (View) menu.findItem(R.id.add).getActionView();
-		//super.onCreateOptionsMenu(menu, inflater);
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.envent, menu);
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+	}
+	
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		// TODO Auto-generated method stub
+		//Log.
+		super.onListItemClick(l, v, position, id);
+	}
+	
+	private ArrayList<EventRowData> getEventRowList(){
+		ArrayList<EventRowData> eventRowList = new ArrayList<EventRowData>();
+		EventRowData row1 = new EventRowData("One", false);
+		EventRowData row2 = new EventRowData("Two", false);
+		EventRowData row3 = new EventRowData("Three", false);
+		EventRowData row4 = new EventRowData("Four", false);
+		EventRowData row5 = new EventRowData("Five", false);
+		EventRowData row6 = new EventRowData("Six", false);
+		eventRowList.add(row1);
+		eventRowList.add(row2);
+		eventRowList.add(row3);
+		eventRowList.add(row4);
+		eventRowList.add(row5);
+		eventRowList.add(row6);
+		return eventRowList;
 	}
 
 }
