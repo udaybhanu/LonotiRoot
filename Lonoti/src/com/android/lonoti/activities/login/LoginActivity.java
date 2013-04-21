@@ -1,10 +1,15 @@
 package com.android.lonoti.activities.login;
 
+import java.util.List;
+
 import com.android.lonoti.R;
-import com.android.lonoti.R.id;
-import com.android.lonoti.R.layout;
-import com.android.lonoti.R.menu;
-import com.android.lonoti.R.string;
+import com.android.lonoti.bom.payload.Friend;
+import com.android.lonoti.bom.payload.FriendEvents;
+import com.android.lonoti.bom.payload.LEvent;
+import com.android.lonoti.bom.payload.Location;
+import com.android.lonoti.dbhelper.DatabaseManager;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.ForeignCollection;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -14,6 +19,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -26,6 +32,7 @@ import android.widget.TextView;
  * well.
  */
 public class LoginActivity extends Activity {
+	private final String LOG_TAG = getClass().getSimpleName();
 	/**
 	 * A dummy authentication store containing known user names and passwords.
 	 * TODO: remove after connecting to a real authentication system.
@@ -64,6 +71,75 @@ public class LoginActivity extends Activity {
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
+		
+		// create some entries in the onCreate
+		Location mgroad = new Location("1","1","MG Road");
+		DatabaseManager.getInstance().createLocation(mgroad);
+		Location kormangla = new Location("2","2","Kormangla");
+		DatabaseManager.getInstance().createLocation(kormangla);
+		
+		Friend friend1 = new Friend("9916622021", false, "preddy1@gmail.com");
+		DatabaseManager.getInstance().createFriend(friend1);
+		Friend friend2 = new Friend("9916622022", false, "preddy2@gmail.com");
+		DatabaseManager.getInstance().createFriend(friend2);
+		Friend friend3 = new Friend("9916622023", false, "preddy3@gmail.com");
+		DatabaseManager.getInstance().createFriend(friend3);
+		
+		LEvent event1 = new LEvent("event1","mg1-desc",mgroad);
+		LEvent event2 = new LEvent("event2","mg2-desc",kormangla);
+		
+		DatabaseManager.getInstance().createLEvent(event1);
+		DatabaseManager.getInstance().createLEvent(event2);
+		
+		//event1-friend1 , friend2 - mgroad
+		//event2-friend2 , friend3 - kormangla
+		FriendEvents fe1 = new FriendEvents(event1, friend1);
+		DatabaseManager.getInstance().createFriendEvents(fe1);
+		FriendEvents fe2 = new FriendEvents(event1, friend2);
+		DatabaseManager.getInstance().createFriendEvents(fe2);
+		FriendEvents fe3 = new FriendEvents(event2, friend2);
+		DatabaseManager.getInstance().createFriendEvents(fe3);
+		FriendEvents fe4 = new FriendEvents(event2, friend3);
+		DatabaseManager.getInstance().createFriendEvents(fe4);
+	
+		List<LEvent> myLevents = DatabaseManager.getInstance().getAllLEvents();
+		List<Location> myLocations = DatabaseManager.getInstance().getAllLocations();
+		List<Friend> myFriends = DatabaseManager.getInstance().getAllFriends();
+		List<FriendEvents> myFriendEvents = DatabaseManager.getInstance().getAllFriendEvents();
+		
+		for(FriendEvents fevnt : myFriendEvents)
+		{
+			Log.e(LOG_TAG, "Event Name is " + fevnt.getEvent().getName());
+			Log.e(LOG_TAG, "Friend email is "+ fevnt.getFriend().getEmailId());
+		}
+		
+		for(LEvent evnt : myLevents)
+		{
+			Log.e(LOG_TAG, "Event Name is " + evnt.getName());
+			Location l3 = evnt.getLocation();
+			Log.e(LOG_TAG, "Event Location is " + l3.getLocdescrition());
+			for(FriendEvents fe : evnt.getFriendEvents())
+			{
+				Log.e(LOG_TAG, "Event " + evnt.getName() + "Friend " + fe.getFriend().getMobileNumber());
+			}
+		}
+		
+		for(Friend frnd : myFriends)
+		{
+			Log.e(LOG_TAG, "Friend No is " + frnd.getMobileNumber());
+			for(FriendEvents fe : frnd.getFriendEvents())
+			{
+				Log.e(LOG_TAG, "Friend " + frnd.getEmailId() + " is in Event " + fe.getEvent().getName());
+			}
+		}
+		for(Location loc1 : myLocations)
+		{
+			Log.e(LOG_TAG, "Location Name is " + loc1.getLocdescrition());
+			for(LEvent evnt : loc1.getEvents())
+			{
+				Log.e(LOG_TAG, "Event Name is " + evnt.getName());	
+			}
+		}
 
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView
