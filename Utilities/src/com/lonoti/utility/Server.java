@@ -98,9 +98,10 @@ Request request = new Request();
 		Gson gson = new Gson();
 		System.out.println(gson.toJson(request));
 		//System.out.println(URLEncoder.encode(gson.toJson(request), "UTF-8"));
-		System.out.println(Base64.encode(gson.toJson(request).getBytes()));
+		System.out.println(URLEncoder.encode(Base64.encode(gson.toJson(request).getBytes()), "UTF-8"));
 		System.out.println(Calendar.getInstance().getTimeInMillis()/1000);
-		Server.callServer("data=" + requestStr);
+		
+		//Server.callServer("data=" + requestStr);
 		
 	}
 	

@@ -2,6 +2,7 @@ package com.android.lonoti.activities.login;
 
 import java.util.List;
 
+import com.android.lonoti.HomeActivity;
 import com.android.lonoti.R;
 import com.android.lonoti.bom.payload.Friend;
 import com.android.lonoti.bom.payload.FriendEvents;
@@ -15,6 +16,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -307,6 +309,9 @@ public class LoginActivity extends Activity {
 			showProgress(false);
 
 			if (success) {
+				Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+		        startActivity(intent);
+		        //overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 				finish();
 			} else {
 				mPasswordView

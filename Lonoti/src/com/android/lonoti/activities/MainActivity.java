@@ -37,6 +37,7 @@ public class MainActivity extends FragmentActivity {
 		//One can access This function from any where to get data from DB
 		//getDBData();
 		setContentView(R.layout.activity_main);
+		
 		/*// Make sure the device has the proper dependencies.
         GCMRegistrar.checkDevice(this);
         // Make sure the manifest was properly set
