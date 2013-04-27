@@ -1,10 +1,18 @@
 package com.android.lonoti.bom.payload;
 
+import java.io.Serializable;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "friendsevents")
-public class FriendEvents {
+public class FriendEvents implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	
 	@DatabaseField(generatedId = true, allowGeneratedIdInsert=true)
 	private Integer id;
@@ -17,6 +25,21 @@ public class FriendEvents {
 	public FriendEvents(){
 			
 		}
+	
+	
+	
+	public Integer getId() {
+		return id;
+	}
+
+
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+
+
 	public FriendEvents(LEvent event,Friend friend){
 		this.event = event;
 		this.friend = friend;

@@ -52,6 +52,10 @@ public class Location {
 		return id;
 	}
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public ForeignCollection<LEvent> getEvents() {
 		// TODO Auto-generated method stub
 		return levents;
