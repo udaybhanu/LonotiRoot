@@ -52,8 +52,11 @@ public class Location {
 		return id;
 	}
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public ForeignCollection<LonotiEvent> getEvents() {
-		// TODO Auto-generated method stub
 		return levents;
 	}
 

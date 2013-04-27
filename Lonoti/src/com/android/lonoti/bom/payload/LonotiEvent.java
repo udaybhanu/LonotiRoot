@@ -14,6 +14,11 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "levents")
 public class LonotiEvent extends Payload{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@DatabaseField(generatedId = true, allowGeneratedIdInsert=true)
 	private Integer id;
 	
@@ -49,6 +54,16 @@ public class LonotiEvent extends Payload{
 		this.location = location;
 	}
 	
+	
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}

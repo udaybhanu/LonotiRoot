@@ -1,12 +1,19 @@
 package com.android.lonoti.bom.payload;
 
+import java.io.Serializable;
+
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "friends")
-public class Friend {
+public class Friend implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@DatabaseField(generatedId = true, allowGeneratedIdInsert=true)
 	private Integer id;
@@ -51,5 +58,12 @@ public class Friend {
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
 	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
 	
 }

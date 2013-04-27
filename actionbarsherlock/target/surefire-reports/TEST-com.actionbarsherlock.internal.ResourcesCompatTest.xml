@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.actionbarsherlock.internal.ResourcesCompatTest" time="46.795" tests="1" errors="1" skipped="0" failures="0">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="android.sdk.path" value="C:\Users\udaybhanupunna\Downloads\adt-bundle-windows-x86_64-20130219\sdk"/>
+    <property name="sun.boot.library.path" value="C:\Progra~2\Java\jdk1.6.0_17\jre\bin"/>
+    <property name="java.vm.version" value="14.3-b01"/>
+    <property name="java.vm.vendor" value="Sun Microsystems Inc."/>
+    <property name="java.vendor.url" value="http://java.sun.com/"/>
+    <property name="path.separator" value=";"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) Client VM"/>
+    <property name="file.encoding.pkg" value="sun.io"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="sun.os.patch.level" value="Service Pack 1"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="C:\Users\udaybhanupunna\Downloads\JakeWharton-ActionBarSherlock-4.3.0-0-gfe0125a\JakeWharton-ActionBarSherlock-c47975f"/>
+    <property name="java.runtime.version" value="1.6.0_17-b04"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
+    <property name="java.endorsed.dirs" value="C:\Progra~2\Java\jdk1.6.0_17\jre\lib\endorsed"/>
+    <property name="os.arch" value="x86"/>
+    <property name="java.io.tmpdir" value="C:\Users\UDAYBH~1\AppData\Local\Temp\"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="user.variant" value=""/>
+    <property name="os.name" value="Windows 7"/>
+    <property name="classworlds.conf" value="C:\opt\apache-maven-3.0.4\bin\..\bin\m2.conf"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\Progra~2\Java\jdk1.6.0_17\bin;.;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\app\UdayBhanuPunna\product\11.2.0\dbhome_1\bin;C:\Program Files (x86)\RSA SecurID Token Common;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Enterprise Vault\EVClient\;C:\Program Files\TortoiseSVN\bin;C:\cygwin\bin;C:\opt\apache-ant-1.8.3\bin;C:\opt\apache-maven-3.0.4\bin;C:\Program Files (x86)\Google\Google Apps Sync\;C:\Program Files (x86)\Google\Google Apps Migration\;C:\Progra~2\Java\jdk1.6.0_17\bin;C:\Program Files (x86)\Heroku\bin;C:\Program Files (x86)\ruby-1.9.2\bin;C:\Program Files (x86)\git\bin;C:\Program Files (x86)\git\cmd"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.class.version" value="50.0"/>
+    <property name="sun.management.compiler" value="HotSpot Client Compiler"/>
+    <property name="os.version" value="6.1"/>
+    <property name="user.home" value="C:\Users\udaybhanupunna"/>
+    <property name="user.timezone" value="Asia/Calcutta"/>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
+    <property name="java.specification.version" value="1.6"/>
+    <property name="file.encoding" value="Cp1252"/>
+    <property name="user.name" value="UdayBhanuPunna"/>
+    <property name="java.class.path" value="C:\opt\apache-maven-3.0.4\bin\..\boot\plexus-classworlds-2.4.jar"/>
+    <property name="java.vm.specification.version" value="1.0"/>
+    <property name="sun.arch.data.model" value="32"/>
+    <property name="java.home" value="C:\Progra~2\Java\jdk1.6.0_17\jre"/>
+    <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
+    <property name="user.language" value="en"/>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="java.version" value="1.6.0_17"/>
+    <property name="java.ext.dirs" value="C:\Progra~2\Java\jdk1.6.0_17\jre\lib\ext;C:\Windows\Sun\Java\lib\ext"/>
+    <property name="sun.boot.class.path" value="C:\Progra~2\Java\jdk1.6.0_17\jre\lib\resources.jar;C:\Progra~2\Java\jdk1.6.0_17\jre\lib\rt.jar;C:\Progra~2\Java\jdk1.6.0_17\jre\lib\sunrsasign.jar;C:\Progra~2\Java\jdk1.6.0_17\jre\lib\jsse.jar;C:\Progra~2\Java\jdk1.6.0_17\jre\lib\jce.jar;C:\Progra~2\Java\jdk1.6.0_17\jre\lib\charsets.jar;C:\Progra~2\Java\jdk1.6.0_17\jre\classes"/>
+    <property name="java.vendor" value="Sun Microsystems Inc."/>
+    <property name="maven.home" value="C:\opt\apache-maven-3.0.4\bin\.."/>
+    <property name="file.separator" value="\"/>
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.desktop" value="windows"/>
+    <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86"/>
+  </properties>
+  <testcase name="com.actionbarsherlock.internal.ResourcesCompatTest" classname="com.actionbarsherlock.internal.ResourcesCompatTest" time="46.795">
+    <error message="java.lang.RuntimeException: Stub!" type="java.lang.RuntimeException">java.lang.RuntimeException: java.lang.RuntimeException: Stub!
+	at android.net.Uri.$$robo$$Uri_30fc_parse(Uri.java:53)
+	at org.robolectric.bytecode.ShadowWrangler$InvocationPlan.callOriginal(ShadowWrangler.java:591)
+	at android.net.Uri.parse(Uri.java)
+	at org.robolectric.shadows.ShadowMediaStore.reset(ShadowMediaStore.java:27)
+	at org.robolectric.Robolectric.resetStaticState(Robolectric.java:821)
+	at org.robolectric.RobolectricTestRunner.resetStaticState(RobolectricTestRunner.java:224)
+	at org.robolectric.RobolectricTestRunner.internalBeforeTest(RobolectricTestRunner.java:133)
+	at org.robolectric.RobolectricTestRunner.methodBlock(RobolectricTestRunner.java:96)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:68)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:47)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:300)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray2(ReflectionUtils.java:208)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:159)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:87)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:95)
+</error>
+    <system-out>Warning: an error occurred while binding shadow class: ShadowGeoPoint
+Warning: an error occurred while binding shadow class: ShadowItemizedOverlay
+Warning: an error occurred while binding shadow class: ShadowMapController
+Warning: an error occurred while binding shadow class: ShadowMapActivity
+Warning: an error occurred while binding shadow class: ShadowMapView
+Warning: an error occurred while binding shadow class: ShadowOverlayItem
+</system-out>
+    <system-err>Downloading: org/robolectric/android-base/4.1.2_r1_rc/android-base-4.1.2_r1_rc.pom from repository central at http://repo1.maven.org/maven2
+Transferring 1K from central
+Downloading: org/robolectric/android-kxml2/4.1.2_r1_rc/android-kxml2-4.1.2_r1_rc.pom from repository central at http://repo1.maven.org/maven2
+Transferring 1K from central
+Downloading: org/robolectric/android-luni/4.1.2_r1_rc/android-luni-4.1.2_r1_rc.pom from repository central at http://repo1.maven.org/maven2
+Transferring 1K from central
+Downloading: org/robolectric/android-base/4.1.2_r1_rc/android-base-4.1.2_r1_rc-real.jar from repository central at http://repo1.maven.org/maven2
+Transferring 9901K from central
+Downloading: org/robolectric/android-kxml2/4.1.2_r1_rc/android-kxml2-4.1.2_r1_rc-real.jar from repository central at http://repo1.maven.org/maven2
+Transferring 43K from central
+Downloading: org/robolectric/android-luni/4.1.2_r1_rc/android-luni-4.1.2_r1_rc-real.jar from repository central at http://repo1.maven.org/maven2
+Transferring 44K from central
+java.lang.RuntimeException: Stub!
+	at android.net.Uri.$$robo$$Uri_30fc_parse(Uri.java:53)
+	at org.robolectric.bytecode.ShadowWrangler$InvocationPlan.callOriginal(ShadowWrangler.java:591)
+	at android.net.Uri.parse(Uri.java)
+	at org.robolectric.shadows.ShadowMediaStore.reset(ShadowMediaStore.java:27)
+	at org.robolectric.Robolectric.resetStaticState(Robolectric.java:821)
+	at org.robolectric.RobolectricTestRunner.resetStaticState(RobolectricTestRunner.java:224)
+	at org.robolectric.RobolectricTestRunner.internalBeforeTest(RobolectricTestRunner.java:133)
+	at org.robolectric.RobolectricTestRunner.methodBlock(RobolectricTestRunner.java:96)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:68)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:47)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:231)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:60)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:50)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:222)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:300)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:264)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:153)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:124)
+	at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray2(ReflectionUtils.java:208)
+	at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:159)
+	at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:87)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:153)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:95)
+</system-err>
+  </testcase>
+</testsuite>
