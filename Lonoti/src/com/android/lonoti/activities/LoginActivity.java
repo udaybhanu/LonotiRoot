@@ -1,21 +1,22 @@
-package com.android.lonoti.activities.login;
+package com.android.lonoti.activities;
 
-import java.util.List;
 
+import java.net.URLEncoder;
+
+import android.telephony.TelephonyManager;
 import com.android.lonoti.HomeActivity;
 import com.android.lonoti.R;
-import com.android.lonoti.bom.payload.Friend;
-import com.android.lonoti.bom.payload.FriendEvents;
-import com.android.lonoti.bom.payload.LEvent;
-import com.android.lonoti.bom.payload.Location;
-import com.android.lonoti.dbhelper.DatabaseManager;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.ForeignCollection;
+import com.android.lonoti.UserPreferences;
+import com.android.lonoti.bom.Request;
+import com.android.lonoti.bom.payload.Login;
+import com.android.lonoti.bom.payload.LoginResponse;
+import com.android.lonoti.network.Server;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -28,6 +29,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.google.gson.Gson;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -35,13 +37,6 @@ import android.widget.TextView;
  */
 public class LoginActivity extends Activity {
 	private final String LOG_TAG = getClass().getSimpleName();
-	/**
-	 * A dummy authentication store containing known user names and passwords.
-	 * TODO: remove after connecting to a real authentication system.
-	 */
-	private static final String[] DUMMY_CREDENTIALS = new String[] {
-			"foo@example.com:hello", "bar@example.com:world" };
-
 	/**
 	 * The default email to populate the email field with.
 	 */
@@ -74,75 +69,6 @@ public class LoginActivity extends Activity {
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
 		
-		// create some entries in the onCreate
-		Location mgroad = new Location("1","1","MG Road");
-		DatabaseManager.getInstance().createLocation(mgroad);
-		Location kormangla = new Location("2","2","Kormangla");
-		DatabaseManager.getInstance().createLocation(kormangla);
-		
-		Friend friend1 = new Friend("9916622021", false, "preddy1@gmail.com");
-		DatabaseManager.getInstance().createFriend(friend1);
-		Friend friend2 = new Friend("9916622022", false, "preddy2@gmail.com");
-		DatabaseManager.getInstance().createFriend(friend2);
-		Friend friend3 = new Friend("9916622023", false, "preddy3@gmail.com");
-		DatabaseManager.getInstance().createFriend(friend3);
-		
-		LEvent event1 = new LEvent("event1","mg1-desc",mgroad);
-		LEvent event2 = new LEvent("event2","mg2-desc",kormangla);
-		
-		DatabaseManager.getInstance().createLEvent(event1);
-		DatabaseManager.getInstance().createLEvent(event2);
-		
-		//event1-friend1 , friend2 - mgroad
-		//event2-friend2 , friend3 - kormangla
-		FriendEvents fe1 = new FriendEvents(event1, friend1);
-		DatabaseManager.getInstance().createFriendEvents(fe1);
-		FriendEvents fe2 = new FriendEvents(event1, friend2);
-		DatabaseManager.getInstance().createFriendEvents(fe2);
-		FriendEvents fe3 = new FriendEvents(event2, friend2);
-		DatabaseManager.getInstance().createFriendEvents(fe3);
-		FriendEvents fe4 = new FriendEvents(event2, friend3);
-		DatabaseManager.getInstance().createFriendEvents(fe4);
-	
-		List<LEvent> myLevents = DatabaseManager.getInstance().getAllLEvents();
-		List<Location> myLocations = DatabaseManager.getInstance().getAllLocations();
-		List<Friend> myFriends = DatabaseManager.getInstance().getAllFriends();
-		List<FriendEvents> myFriendEvents = DatabaseManager.getInstance().getAllFriendEvents();
-		
-		for(FriendEvents fevnt : myFriendEvents)
-		{
-			Log.e(LOG_TAG, "Event Name is " + fevnt.getEvent().getName());
-			Log.e(LOG_TAG, "Friend email is "+ fevnt.getFriend().getEmailId());
-		}
-		
-		for(LEvent evnt : myLevents)
-		{
-			Log.e(LOG_TAG, "Event Name is " + evnt.getName());
-			Location l3 = evnt.getLocation();
-			Log.e(LOG_TAG, "Event Location is " + l3.getLocdescrition());
-			for(FriendEvents fe : evnt.getFriendEvents())
-			{
-				Log.e(LOG_TAG, "Event " + evnt.getName() + "Friend " + fe.getFriend().getMobileNumber());
-			}
-		}
-		
-		for(Friend frnd : myFriends)
-		{
-			Log.e(LOG_TAG, "Friend No is " + frnd.getMobileNumber());
-			for(FriendEvents fe : frnd.getFriendEvents())
-			{
-				Log.e(LOG_TAG, "Friend " + frnd.getEmailId() + " is in Event " + fe.getEvent().getName());
-			}
-		}
-		for(Location loc1 : myLocations)
-		{
-			Log.e(LOG_TAG, "Location Name is " + loc1.getLocdescrition());
-			for(LEvent evnt : loc1.getEvents())
-			{
-				Log.e(LOG_TAG, "Event Name is " + evnt.getName());	
-			}
-		}
-
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView
 				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -285,18 +211,34 @@ public class LoginActivity extends Activity {
 			// TODO: attempt authentication against a network service.
 
 			try {
-				// Simulate network access.
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				return false;
-			}
+				Login payload = new Login();
+				payload.setUsername(mEmailView.getText().toString());
+				payload.setPassword(mPasswordView.getText().toString());
+				/*Incase of register add following
+				TelephonyManager tm = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+				payload.setDeviceID(tm.getDeviceId());*/
+				Gson gson = new Gson();
+				
+				String requestStr = "email=a@a.com&password=abcd"; //gson.toJson(payload);
+				Log.e(LOG_TAG,requestStr);
+				/*byte[] b64encoded = android.util.Base64.encode(requestStr.getBytes(), android.util.Base64.DEFAULT);
+				String encodedRequest = URLEncoder.encode(b64encoded.toString(), "UTF-8" );*/
+				String encodedRequest = URLEncoder.encode(requestStr, "UTF-8" );
+				/*
+					System.out.println(URLEncoder.encode(Base64.encode(gson.toJson(request).getBytes()), "UTF-8"));
+				*/
+				//String response  = Server.callServer(requestStr);
 
-			for (String credential : DUMMY_CREDENTIALS) {
-				String[] pieces = credential.split(":");
-				if (pieces[0].equals(mEmail)) {
-					// Account exists, return true if the password matches.
-					return pieces[1].equals(mPassword);
-				}
+				String response  = "{\"auth_token\":\"sDcmUj7saEMH4PvReqSg\",\"email\":\"mrudhukar.batchu@chronus.com\"}" ; //Server.callServer(encodedRequest);
+				Log.e(LOG_TAG,response);
+				LoginResponse resp = gson.fromJson(response, LoginResponse.class);
+				Log.e(LOG_TAG,"Auth token is "+resp.getAuth_token());
+				UserPreferences.getPreferences().put("authCode", resp.getAuth_token());
+				
+				// Simulate network access.
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
 			}
 
 			// TODO: register the new account here.

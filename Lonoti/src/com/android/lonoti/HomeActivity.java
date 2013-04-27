@@ -10,6 +10,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TabHost;
@@ -27,6 +28,8 @@ public class HomeActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//setContentView(R.layout.activity_home);
+		
+		Log.e("AUTHCODE",UserPreferences.getPreferences().getString("authCode", "Authcode Not Present"));
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			ActionBar actionBar = getActionBar();
 			

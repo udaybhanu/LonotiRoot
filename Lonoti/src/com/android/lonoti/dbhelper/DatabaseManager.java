@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.android.lonoti.bom.payload.Friend;
 import com.android.lonoti.bom.payload.FriendEvents;
-import com.android.lonoti.bom.payload.LEvent;
+import com.android.lonoti.bom.payload.LonotiEvent;
 import com.android.lonoti.bom.payload.Location;
 
 import android.content.Context;
@@ -33,20 +33,20 @@ public class DatabaseManager {
         return helper;
     }
     
-    public void createLEvent(LEvent event)
+    public void createLonotiEvent(LonotiEvent event)
     {
     	try {
-			getHelper().getLEventDao().create(event);
+			getHelper().getLonotiEventDao().create(event);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
  
-    public List<LEvent> getAllLEvents() {
-        List<LEvent> lEvents = null;
+    public List<LonotiEvent> getAllLonotiEvents() {
+        List<LonotiEvent> lEvents = null;
         try {
-        	lEvents = getHelper().getLEventDao().queryForAll();
+        	lEvents = getHelper().getLonotiEventDao().queryForAll();
         } catch (SQLException e) {
             e.printStackTrace();
         }

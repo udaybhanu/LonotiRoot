@@ -80,7 +80,7 @@
         <service android:name="com.android.lonoti.GCMIntentService" />
 
         <activity
-            android:name="com.android.lonoti.activities.login.LoginActivity"
+            android:name="com.android.lonoti.activities.LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>

@@ -17,7 +17,7 @@ public class Location {
 	@DatabaseField
 	private String locdescrition;
 	@ForeignCollectionField
-    public ForeignCollection<LEvent> levents;
+    public ForeignCollection<LonotiEvent> levents;
 	
 	public Location() {
 		// TODO Auto-generated constructor stub
@@ -52,7 +52,7 @@ public class Location {
 		return id;
 	}
 
-	public ForeignCollection<LEvent> getEvents() {
+	public ForeignCollection<LonotiEvent> getEvents() {
 		// TODO Auto-generated method stub
 		return levents;
 	}

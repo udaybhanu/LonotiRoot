@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 
+import com.android.lonoti.dbhelper.DatabaseManager;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
@@ -11,7 +12,7 @@ import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "levents")
-public class LEvent extends Payload{
+public class LonotiEvent extends Payload{
 
 	@DatabaseField(generatedId = true, allowGeneratedIdInsert=true)
 	private Integer id;
@@ -22,8 +23,8 @@ public class LEvent extends Payload{
 	private String description;
 	@DatabaseField( foreign = true, foreignAutoRefresh=true)
 	private Location location;
-	/*@DatabaseField
-	private TimeEvent time;*/
+	@DatabaseField
+	private TimeEvent time;
 	
 	@ForeignCollectionField
     public ForeignCollection<FriendEvents> friendEvents;
@@ -38,11 +39,11 @@ public class LEvent extends Payload{
 		return friendEvents;
 	}
 
-	public LEvent(){
+	public LonotiEvent(){
 		//needed by ormlite
 	}
 	
-	public LEvent(	String name, String description, Location location){
+	public LonotiEvent(	String name, String description, Location location){
 		this.name = name;
 		this.description = description;
 		this.location = location;
@@ -72,20 +73,29 @@ public class LEvent extends Payload{
 		this.location = location;
 	}
 
-/*	public TimeEvent getTime() {
+	public TimeEvent getTime() {
 		return time;
 	}
 
 	public void setTime(TimeEvent time) {
 		this.time = time;
-	}*/
+	}
 
-	/*public List<Friend> getFriends() {
+	public List<Friend> getFriends() {
+		List<Friend> friends = new ArrayList<Friend>();
+		for(FriendEvents fe : this.getFriendEvents())
+		{
+			friends.add(fe.getFriend());
+		}
 		return friends;
 	}
 
 	public void setFriends(List<Friend> friends) {
-		this.friends = friends;
-	}*/
+		for(Friend friend : friends)
+		{
+			FriendEvents fe = new FriendEvents(this, friend);
+			DatabaseManager.getInstance().createFriendEvents(fe);
+		}
+	}
 	
 }

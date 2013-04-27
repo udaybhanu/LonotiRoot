@@ -1,7 +1,7 @@
 package com.android.lonoti.fragments;
 
 import com.android.lonoti.R;
-import com.android.lonoti.activities.login.LoginActivity;
+import com.android.lonoti.activities.LoginActivity;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -1,0 +1,68 @@
+		// create some entries in the onCreate
+		Location mgroad = new Location("1","1","MG Road");
+		DatabaseManager.getInstance().createLocation(mgroad);
+		Location kormangla = new Location("2","2","Kormangla");
+		DatabaseManager.getInstance().createLocation(kormangla);
+		
+		Friend friend1 = new Friend("9916622021", false, "preddy1@gmail.com");
+		DatabaseManager.getInstance().createFriend(friend1);
+		Friend friend2 = new Friend("9916622022", false, "preddy2@gmail.com");
+		DatabaseManager.getInstance().createFriend(friend2);
+		Friend friend3 = new Friend("9916622023", false, "preddy3@gmail.com");
+		DatabaseManager.getInstance().createFriend(friend3);
+		
+		LEvent event1 = new LEvent("event1","mg1-desc",mgroad);
+		LEvent event2 = new LEvent("event2","mg2-desc",kormangla);
+		
+		DatabaseManager.getInstance().createLEvent(event1);
+		DatabaseManager.getInstance().createLEvent(event2);
+		
+		//event1-friend1 , friend2 - mgroad
+		//event2-friend2 , friend3 - kormangla
+		FriendEvents fe1 = new FriendEvents(event1, friend1);
+		DatabaseManager.getInstance().createFriendEvents(fe1);
+		FriendEvents fe2 = new FriendEvents(event1, friend2);
+		DatabaseManager.getInstance().createFriendEvents(fe2);
+		FriendEvents fe3 = new FriendEvents(event2, friend2);
+		DatabaseManager.getInstance().createFriendEvents(fe3);
+		FriendEvents fe4 = new FriendEvents(event2, friend3);
+		DatabaseManager.getInstance().createFriendEvents(fe4);
+	
+		List<LEvent> myLevents = DatabaseManager.getInstance().getAllLEvents();
+		List<Location> myLocations = DatabaseManager.getInstance().getAllLocations();
+		List<Friend> myFriends = DatabaseManager.getInstance().getAllFriends();
+		List<FriendEvents> myFriendEvents = DatabaseManager.getInstance().getAllFriendEvents();
+		
+		for(FriendEvents fevnt : myFriendEvents)
+		{
+			Log.e(LOG_TAG, "Event Name is " + fevnt.getEvent().getName());
+			Log.e(LOG_TAG, "Friend email is "+ fevnt.getFriend().getEmailId());
+		}
+		
+		for(LEvent evnt : myLevents)
+		{
+			Log.e(LOG_TAG, "Event Name is " + evnt.getName());
+			Location l3 = evnt.getLocation();
+			Log.e(LOG_TAG, "Event Location is " + l3.getLocdescrition());
+			for(FriendEvents fe : evnt.getFriendEvents())
+			{
+				Log.e(LOG_TAG, "Event " + evnt.getName() + "Friend " + fe.getFriend().getMobileNumber());
+			}
+		}
+		
+		for(Friend frnd : myFriends)
+		{
+			Log.e(LOG_TAG, "Friend No is " + frnd.getMobileNumber());
+			for(FriendEvents fe : frnd.getFriendEvents())
+			{
+				Log.e(LOG_TAG, "Friend " + frnd.getEmailId() + " is in Event " + fe.getEvent().getName());
+			}
+		}
+		for(Location loc1 : myLocations)
+		{
+			Log.e(LOG_TAG, "Location Name is " + loc1.getLocdescrition());
+			for(LEvent evnt : loc1.getEvents())
+			{
+				Log.e(LOG_TAG, "Event Name is " + evnt.getName());	
+			}
+		}

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.android.lonoti.HomeActivity;
 import com.android.lonoti.R;
+import com.android.lonoti.UserPreferences;
 import com.android.lonoti.dbhelper.DatabaseHelper;
 import com.android.lonoti.dbhelper.DatabaseManager;
 import com.google.android.gcm.GCMRegistrar;
@@ -15,6 +16,7 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.support.v4.app.FragmentActivity;
@@ -33,9 +35,7 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		DatabaseManager.init(this);
-		//See following commented function function to know how to retrieve data from a table
-		//One can access This function from any where to get data from DB
-		//getDBData();
+		UserPreferences.getInstance(true, this);
 		setContentView(R.layout.activity_main);
 		
 		/*// Make sure the device has the proper dependencies.

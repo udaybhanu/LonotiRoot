@@ -14,7 +14,7 @@ import com.android.lonoti.bom.payload.Friend;
 import com.android.lonoti.bom.payload.FriendEvents;
 import com.android.lonoti.bom.payload.Location;
 import com.android.lonoti.bom.payload.Payload;
-import com.android.lonoti.bom.payload.LEvent;
+import com.android.lonoti.bom.payload.LonotiEvent;
 import com.android.lonoti.bom.payload.TimeEvent;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
@@ -32,7 +32,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	private static final int DATABASE_VERSION = 1;
 
 	// the DAO object we use to access the SimpleData table
-	private Dao<LEvent, Integer> eventDao = null;
+	private Dao<LonotiEvent, Integer> eventDao = null;
 	private Dao<Friend, Long> friendDao = null;
 	private Dao<Location, Integer> locationDao = null;
 	private Dao<FriendEvents, Integer> friendEventsDao = null;
@@ -96,7 +96,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		if (dbClasses == null) {
 			dbClasses = new ArrayList<Class>();
 			// Populate the Class list representing each of the tables
-			Class[] tmpClassList = new Class[] { Location.class, LEvent.class, Friend.class, FriendEvents.class } ; //TimeEvent.class,
+			Class[] tmpClassList = new Class[] { Location.class, LonotiEvent.class, Friend.class, FriendEvents.class } ; //TimeEvent.class,
 					//Payload.class};
 			for (Class clazz : tmpClassList) {
 				dbClasses.add(clazz);
@@ -110,9 +110,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	 * value.
 	 */
 		
-	public Dao<LEvent, Integer> getLEventDao() throws SQLException {
+	public Dao<LonotiEvent, Integer> getLonotiEventDao() throws SQLException {
 		if (eventDao == null) {
-			eventDao = getDao(LEvent.class);
+			eventDao = getDao(LonotiEvent.class);
 		}
 		return eventDao;
 	}

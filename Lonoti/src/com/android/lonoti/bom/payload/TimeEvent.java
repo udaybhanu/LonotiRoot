@@ -7,7 +7,7 @@ public class TimeEvent {
 	private Date notDate;
 	private String duration;
 
-	TimeEvent (){
+	public TimeEvent (){
 		
 	}
 	public Date getNotDate() {

@@ -9,7 +9,7 @@ public class FriendEvents {
 	@DatabaseField(generatedId = true, allowGeneratedIdInsert=true)
 	private Integer id;
 	@DatabaseField( foreign = true, foreignAutoRefresh=true)
-	private LEvent event;
+	private LonotiEvent event;
 	@DatabaseField( foreign = true, foreignAutoRefresh=true)
 	private Friend friend;
 		
@@ -17,7 +17,7 @@ public class FriendEvents {
 	public FriendEvents(){
 			
 		}
-	public FriendEvents(LEvent event,Friend friend){
+	public FriendEvents(LonotiEvent event,Friend friend){
 		this.event = event;
 		this.friend = friend;
 	}
@@ -28,10 +28,10 @@ public class FriendEvents {
 	public void setFriend(Friend friend) {
 		this.friend = friend;
 	}
-	public LEvent getEvent() {
+	public LonotiEvent getEvent() {
 		return event;
 	}
-	public void setEvent(LEvent event) {
+	public void setEvent(LonotiEvent event) {
 		this.event = event;
 	}
 }
