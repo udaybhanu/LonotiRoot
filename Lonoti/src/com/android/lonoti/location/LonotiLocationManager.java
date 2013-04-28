@@ -26,35 +26,6 @@ public class LonotiLocationManager {
 	private LonotiLocationManager(Context context){
 		// TODO Auto-generated constructor stub
 		locationManager =  (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-		listener = new LocationListener() {
-			
-			@Override
-			public void onStatusChanged(String s, int i, Bundle bundle) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onProviderEnabled(String s) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onProviderDisabled(String s) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onLocationChanged(Location location) {
-				// TODO Auto-generated method stub
-				if(location != null){
-					lastLocation = location;
-				}
-				locationManager.removeUpdates(listener);
-			}
-		};
 	}
 	
 	public static LonotiLocationManager getInstance(Context context){
@@ -80,6 +51,16 @@ public class LonotiLocationManager {
 		return lastLocation;
 	}
 	
+	public void requestLocation(String criteria, LocationListener listener) throws LocationException{
+		
+		String providerName = getBestProvider();
+		if(providerName == null){
+			throw new LocationException("No providers available");
+		}
+		
+		locationManager.requestLocationUpdates(providerName, 0, 0, listener);
+	}
+	
 	public Intent getFirableIntent(String provider){
 		Boolean providerEnabled = locationManager.isProviderEnabled(provider);
 		if(!providerEnabled){
@@ -95,6 +76,12 @@ public class LonotiLocationManager {
 		criteria.setPowerRequirement(Criteria.POWER_LOW);
 		String provider = locationManager.getBestProvider(criteria, true);
 		return provider;
+	}
+	
+	public void unRegisterListener(LocationListener listener){
+		
+		locationManager.removeUpdates(listener);
+		
 	}
 	
 }
