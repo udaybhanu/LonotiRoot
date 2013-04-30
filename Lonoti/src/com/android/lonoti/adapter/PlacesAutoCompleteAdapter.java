@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.json.JSONException;
 
+import com.android.lonoti.exception.NetworkException;
 import com.android.lonoti.location.LonotiLocationPlaces;
 
 import android.content.Context;
@@ -44,19 +45,15 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
                 FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
                     // Retrieve the autocomplete results.
-                    try {
-						//resultList = LonotiLocationPlaces.getContent(constraint.toString());
-                    	results = LonotiLocationPlaces.getContentMap(constraint.toString());
-						
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
                     
-                    // Assign the data to the FilterResults
+						//resultList = LonotiLocationPlaces.getContent(constraint.toString());
+                    	try {
+							results = LonotiLocationPlaces.getContentMap(constraint.toString());
+						} catch (NetworkException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					                    // Assign the data to the FilterResults
                     resultList = new ArrayList<String>();
                     resultList.addAll(results.keySet());
                     filterResults.values = resultList;
