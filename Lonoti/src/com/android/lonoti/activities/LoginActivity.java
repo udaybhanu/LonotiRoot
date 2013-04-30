@@ -10,7 +10,7 @@ import com.android.lonoti.UserPreferences;
 import com.android.lonoti.bom.Request;
 import com.android.lonoti.bom.payload.Login;
 import com.android.lonoti.bom.payload.LoginResponse;
-import com.android.lonoti.network.Server;
+import com.android.lonoti.network.LonotiServerManager;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

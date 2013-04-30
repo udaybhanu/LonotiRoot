@@ -1,4 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/newEvent" android:orderInCategory="1" android:title="New" android:showAsAction="always"></item>
-	<item android:id="@+id/editEvent" android:orderInCategory="1" android:title="Edit" android:showAsAction="always"></item>
+    <item android:id="@+id/action_search"
+        android:alphabeticShortcut="f"
+        android:title="@android:string/search_go"
+        android:icon="@android:drawable/ic_menu_search"
+        android:showAsAction="always|collapseActionView"
+        android:actionViewClass="android.widget.SearchView"
+        android:imeOptions="actionSearch" />
+    <item android:id="@+id/newEvent" android:orderInCategory="1" android:title="New" android:showAsAction="always" android:icon="@android:drawable/ic_menu_add"></item>
+	<item android:id="@+id/editEvent" android:orderInCategory="2" android:title="Delete" android:showAsAction="always" android:icon="@android:drawable/ic_menu_delete"></item>
 </menu>

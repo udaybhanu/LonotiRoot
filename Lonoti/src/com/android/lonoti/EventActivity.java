@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.ListFragment;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -37,8 +39,11 @@ public class EventActivity extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
+		setHasOptionsMenu(true);
 		setListAdapter(new EventListAdapter(getActivity(), R.layout.event_row, getEventRowList()));
+		
 	    getListView().setTextFilterEnabled(true);
+	    getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 	}
 	
 	@Override
@@ -47,6 +52,20 @@ public class EventActivity extends ListFragment {
 		//View v = (View) menu.findItem(R.id.add).getActionView();
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.envent, menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		
+		if(item.getItemId() == R.id.newEvent){
+			
+			Intent intent = new Intent(getActivity(), LonotiEventCreate.class);
+			startActivity(intent);
+			
+		}
+		
+		return super.onOptionsItemSelected(item);
 	}
 	
 	@Override
