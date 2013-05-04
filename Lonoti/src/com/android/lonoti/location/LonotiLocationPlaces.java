@@ -1,14 +1,6 @@
 package com.android.lonoti.location;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,13 +11,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.android.lonoti.bom.payload.Location;
 import com.android.lonoti.exception.NetworkException;
 import com.android.lonoti.network.LonotiServerManager;
+import com.google.gson.JsonObject;
 
 public class LonotiLocationPlaces {
 
 	public final static String SERVER_URL_AUTOCOMPLETE = "https://maps.googleapis.com/maps/api/place/autocomplete/json";
 	public final static String SERVER_URL_LOCATION_DETAILS = "https://maps.googleapis.com/maps/api/place/details/json";
+	public final static String SERVER_URL_LOCATION_DETAILS_SEARCH = "https://maps.googleapis.com/maps/api/place/search/json";
 	
 	public static List<String> getContent(String key) throws NetworkException{
 		
@@ -89,22 +84,24 @@ public class LonotiLocationPlaces {
 	}
 	
 	
-	public com.android.lonoti.bom.payload.Location getLocation(String reference) throws NetworkException{
+	public static com.android.lonoti.bom.payload.Location getLocation(String reference) throws NetworkException{
 		
 		com.android.lonoti.bom.payload.Location location = new com.android.lonoti.bom.payload.Location();
 		
 		try {
 			String jsonResults = LonotiServerManager.callServer(SERVER_URL_LOCATION_DETAILS + "?reference="+ URLEncoder.encode(reference, "utf8") +"&sensor=false&key=AIzaSyBy_w78WsrAv96w81nDRjl2LLWX2ob09wQ", "GET", 45000, false, null);
 			JSONObject jsonObj = new JSONObject(jsonResults.toString());
-	        String status = jsonObj.getJSONObject("status").toString();
+	        String status = jsonObj.getString("status");
 	        
 	        if("INVALID_REQUEST".equals(status)){
 	        	throw new NetworkException("INVALID_REQUEST (LonotiLocationPlaces)");
 	        }
 	        
-	        String lat = jsonObj.getJSONObject("lat").toString();
-	        String log = jsonObj.getJSONObject("lon").toString();
-	        String desc = jsonObj.getJSONObject("name").toString();
+	        JSONObject locationObj = jsonObj.getJSONObject("result").getJSONObject("geometry").getJSONObject("location");
+	        
+	        String lat = locationObj.getString("lat");
+	        String log = locationObj.getString("lng");
+	        String desc = jsonObj.getJSONObject("result").getString("name");
 	        
 	        location.setLat(lat);
 	        location.setLon(log);
@@ -121,6 +118,40 @@ public class LonotiLocationPlaces {
 		
         return location;
         
+	}
+	
+	public static void main(String args[]) throws NetworkException{
+		
+		Location location = getLocation("CkQ2AAAAJLHKR8rPII-Pocezpno6U-GWe57CrGXjslV_M65Puq-qA7ujZUK8RTuz2HB8aTgS-4wPsQx17ZuNy1QoXcjXNhIQNSKWzfcS4WIEMR5fy4t-FBoULE9G2lhXnb1kNbZezwL2SBqG62s");
+		
+	}
+	
+	public static String getLocationDescription(Location location) throws NetworkException{
+		
+		try {
+			String jsonResults = LonotiServerManager.callServer(SERVER_URL_LOCATION_DETAILS_SEARCH + "?location="+ location.getLat() + "," + location.getLon() + "&radius=50" + "&sensor=false&key=AIzaSyBy_w78WsrAv96w81nDRjl2LLWX2ob09wQ", "GET", 45000, false, null);
+			JSONObject jsonObj;
+			jsonObj = new JSONObject(jsonResults.toString());
+			String status = jsonObj.getJSONObject("status").toString();
+	        
+	        if("INVALID_REQUEST".equals(status)){
+	        	throw new NetworkException("INVALID_REQUEST (LonotiLocationPlaces)");
+	        }
+	        
+	        String response = null;
+	        
+	        JSONArray results = jsonObj.getJSONArray("results");
+	        
+	        JSONObject result = (JSONObject) results.get(0);
+	        response = result.getString("vicinity");
+	        
+	        return response;
+	        
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			throw new NetworkException("JSONException : Invalid Response (LonotiLocationPlaces)", e);
+		}
+		
 	}
 	
 }

@@ -2,6 +2,7 @@ package com.android.lonoti;
 
 import java.util.ArrayList;
 
+import com.android.lonoti.activities.LonotiEventCreate;
 import com.android.lonoti.adapter.EventListAdapter;
 import com.android.lonoti.adapter.data.EventRowData;
 
