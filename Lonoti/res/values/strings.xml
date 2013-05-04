@@ -14,5 +14,6 @@
     <string name="title_activity_notifications">NotificationsActivity</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="sign_in">SignIn</string>
+    <string name="title_activity_lonoti_event_create">LonotiEventCreate</string>
 
 </resources>

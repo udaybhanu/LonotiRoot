@@ -16,6 +16,10 @@ public class Location {
 	private String lon;
 	@DatabaseField
 	private String locdescrition;
+	
+	@DatabaseField
+	private String reference;
+	
 	@ForeignCollectionField
     public ForeignCollection<LonotiEvent> levents;
 	
@@ -59,5 +63,14 @@ public class Location {
 	public ForeignCollection<LonotiEvent> getEvents() {
 		return levents;
 	}
+
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+		
 
 }

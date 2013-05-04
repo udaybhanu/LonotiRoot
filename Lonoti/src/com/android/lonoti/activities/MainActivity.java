@@ -5,6 +5,7 @@ import static com.android.lonoti.Config.SENDER_ID;
 import java.util.List;
 
 import com.android.lonoti.HomeActivity;
+import com.android.lonoti.LonotiThread;
 import com.android.lonoti.R;
 import com.android.lonoti.UserPreferences;
 import com.android.lonoti.dbhelper.DatabaseHelper;
@@ -24,6 +25,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,12 +33,18 @@ public class MainActivity extends FragmentActivity {
 	
 	private final String LOG_TAG = getClass().getSimpleName();
 
+	private int mProgressStatus = 0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		DatabaseManager.init(this);
 		UserPreferences.getInstance(true, this);
 		setContentView(R.layout.activity_main);
+		
+		final ProgressBar progress = (ProgressBar) findViewById(com.android.lonoti.R.id.mainProgress);
+		
+		new Thread(new LonotiThread(this)).start();
 		
 		/*// Make sure the device has the proper dependencies.
         GCMRegistrar.checkDevice(this);

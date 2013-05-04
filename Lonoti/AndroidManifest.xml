@@ -32,7 +32,6 @@
 
     <!-- Permission to vibrate -->
     <uses-permission android:name="android.permission.VIBRATE" />
-    
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_SMS"></uses-permission>
@@ -91,6 +90,10 @@
             android:name="com.android.lonoti.activities.LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+        <activity
+            android:name="com.android.lonoti.LonotiEventCreate"
+            android:label="@string/title_activity_lonoti_event_create" >
         </activity>
     </application>
 

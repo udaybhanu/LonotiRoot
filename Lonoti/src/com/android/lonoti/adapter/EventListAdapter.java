@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.Filter;
+import android.widget.Filter.FilterListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,5 +73,26 @@ public class EventListAdapter extends ArrayAdapter<EventRowData>{
 		   convertView.setTag(holder);
 		   return convertView;
 	}
+	
+	@Override
+	public Filter getFilter() {
+		// TODO Auto-generated method stub
+		return new Filter(){
+
+			@Override
+			protected FilterResults performFiltering(CharSequence charsequence) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			protected void publishResults(CharSequence charsequence,
+					FilterResults filterresults) {
+				// TODO Auto-generated method stub
+				
+			}};
+	}
+	
+	
 	
 }
