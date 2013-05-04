@@ -1,5 +1,7 @@
 package com.android.lonoti;
 
+import java.util.List;
+
 import android.os.Build;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
@@ -8,6 +10,9 @@ import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.ResolveInfo;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -42,6 +47,13 @@ public class HomeActivity extends FragmentActivity {
 			tab.setTabListener(tl);
 			
 			actionBar.addTab(tab);
+			Intent intent = new Intent("android.provider.Telephony.SMS_RECEIVED");
+			IntentFilter fp = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+			fp.setPriority(20);
+			List<ResolveInfo> infos = getPackageManager().queryBroadcastReceivers(intent, 0);
+			for (ResolveInfo info : infos) {
+			    Log.e("PROIS","Receiver name:" + info.activityInfo.name + "; priority=" + info.priority);
+			}
 			
 			String label2 = "Notifications";
 			tab = actionBar.newTab();
