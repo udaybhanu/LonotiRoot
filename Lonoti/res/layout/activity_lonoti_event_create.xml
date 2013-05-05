@@ -29,14 +29,30 @@
         android:singleLine="false" 
         android:layout_marginBottom="10dp"/>
 
-    <Spinner
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal" 
+        android:layout_marginBottom="3dp">
+        
+        <Spinner
         android:id="@+id/spinner_event_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
         android:entries="@array/event_type_array"
         android:prompt="@string/event_type_select_promt"
-        android:layout_marginBottom="3dp"/>
+        android:layout_weight="1"/>
 
+        <ImageView
+            android:id="@+id/image_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_info_details" 
+            android:contentDescription="Hover"/>
+        
+    </LinearLayout>
+
+    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
@@ -63,6 +79,7 @@
         
     </LinearLayout>
 
+    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
@@ -84,4 +101,40 @@
         
     </LinearLayout>
 
+    <TextView          
+      android:layout_width="fill_parent" 
+      android:layout_height="1px" 
+      android:background="@android:color/darker_gray"
+      android:layout_marginTop="2dp"
+      android:layout_marginBottom="2dp" />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" 
+        android:id="@+id/layout_day_repeat_select">
+        
+        <TextView
+            android:id="@+id/repeat_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Repeat"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+        <TextView
+            android:id="@+id/repeat_text_days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Never"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+    </LinearLayout>
+    
+    <TextView          
+      android:layout_width="fill_parent" 
+      android:layout_height="1px" 
+      android:background="@android:color/darker_gray"
+      android:layout_marginTop="2dp"
+      android:layout_marginBottom="2dp" />
+    
 </LinearLayout>

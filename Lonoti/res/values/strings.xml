@@ -14,7 +14,7 @@
     <string name="title_activity_notifications">NotificationsActivity</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="sign_in">SignIn</string>
-    <string name="title_activity_lonoti_event_create">LonotiEventCreate</string>
+    <string name="title_activity_lonoti_event_create">New Event</string>
     <string name="title_activity_map_select">MapSelectActivity</string>
     <string-array name="event_type_array">
         <item >Time Based</item>
@@ -22,6 +22,7 @@
         <item >Location Time Based</item>
     </string-array>
     <string name="event_type_select_promt">Type of Event</string>
-    
+    <string name="event_item_save">Save</string>
+    <string name="ok_string">OK</string>
 
 </resources>

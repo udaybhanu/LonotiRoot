@@ -2,15 +2,11 @@ package com.android.lonoti.activities;
 
 import java.util.Calendar;
 
+import com.android.lonoti.Config;
 import com.android.lonoti.R;
-import com.android.lonoti.R.id;
-import com.android.lonoti.R.layout;
-import com.android.lonoti.R.menu;
 import com.android.lonoti.activies.map.MapSelectActivity;
 import com.android.lonoti.adapter.PlacesAutoCompleteAdapter;
 import com.android.lonoti.bom.payload.Location;
-import com.android.lonoti.exception.NetworkException;
-import com.android.lonoti.location.LonotiLocationPlaces;
 import com.android.lonoti.network.LonotiAsyncServiceRequest;
 import com.android.lonoti.network.LonotiTaskListener;
 
@@ -18,12 +14,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.AlertDialog.Builder;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,7 +33,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 public class LonotiEventCreate extends Activity implements OnItemClickListener{
 
@@ -52,6 +47,10 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 	Button timeButton;
 	LinearLayout locationLayout;
 	Calendar c = Calendar.getInstance();
+	
+	LinearLayout layout;
+	
+	private boolean[] mDaysOfWeek = {false, false, false, false, false, false, false};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -157,9 +156,44 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 			}
 		});
 		
+		layout = (LinearLayout) findViewById(R.id.layout_day_repeat_select);
+		
+		layout.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+				Builder builder = new Builder(LonotiEventCreate.this);
+				builder.setTitle("Repeat");
+				builder.setMultiChoiceItems(
+						 Config.values, mDaysOfWeek,
+			                new DialogInterface.OnMultiChoiceClickListener() {
+			                    public void onClick(DialogInterface dialog, int which,
+			                            boolean isChecked) {
+			                        
+			                    }
+			                });
+				builder.setPositiveButton(R.string.ok_string, new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						TextView preview = (TextView) layout.findViewById(R.id.repeat_text_days);
+						preview.setText(getRepeatString());
+					}
+
+				}); 
+				builder.show();
+				
+			}
+		});
+		
 		//startActivityForResult(getIntent(), requestCode)
 	}
 
+	
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
@@ -227,5 +261,27 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 		autoComplete.setText(savedInstanceState.getString("locationtext"));
 		
 	}*/
+	
+	private String getRepeatString(){
+		
+		StringBuffer sb = new StringBuffer();
+		
+		int j = 0;
+		
+		for(int i = 0; i < Config.values.length ; i++){
+			if(mDaysOfWeek[i]){
+				sb.append(Config.values[i].substring(0, 3) + ", ");
+				j++;
+			}
+		}
+		
+		if( j == 0){
+			sb.append("Never");
+		} else{
+			sb.replace(sb.lastIndexOf(","), sb.length(), "");
+		}
+		
+		return sb.toString();
+	}
 	
 }
