@@ -51,7 +51,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.android.lonoti.HomeActivity"
+            android:name="com.android.lonoti.activities.HomeActivity"
             android:label="@string/title_activity_home" >
         </activity>
         <activity

@@ -4,16 +4,12 @@ import static com.android.lonoti.Config.SENDER_ID;
 
 import java.util.List;
 
-import com.android.lonoti.HomeActivity;
-import com.android.lonoti.LonotiThread;
 import com.android.lonoti.R;
 import com.android.lonoti.UserPreferences;
-import com.android.lonoti.dbhelper.DatabaseHelper;
 import com.android.lonoti.dbhelper.DatabaseManager;
+import com.android.lonoti.network.LonotiAsyncServiceRequest;
+import com.android.lonoti.network.LonotiTaskListener;
 import com.google.android.gcm.GCMRegistrar;
-import com.j256.ormlite.android.apptools.OpenHelperManager;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -29,11 +25,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity  implements LonotiTaskListener{
 	
 	private final String LOG_TAG = getClass().getSimpleName();
-
-	private int mProgressStatus = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,35 +36,42 @@ public class MainActivity extends FragmentActivity {
 		UserPreferences.getInstance(true, this);
 		setContentView(R.layout.activity_main);
 		
+		//First We see progress bar. Not even for a milli second if the response is received before that
 		final ProgressBar progress = (ProgressBar) findViewById(com.android.lonoti.R.id.mainProgress);
 		
-		new Thread(new LonotiThread(this)).start();
+		//Now see if the the current Authcode is valid - if yes Dont show login screen but show Home Screen
 		
-		/*// Make sure the device has the proper dependencies.
+		//Get existing auth code
+		String AuthCode = UserPreferences.getPreferences().getString("authCode", "AuthcodeNotPresent");
+		//Check Auth status by sending a server request with current Authcode and user details
+		//That will call doTask() which will start the appropriate Activity:Home or login 
+		
+		//form and fire request
+		/*LonotiAsyncServiceRequest checkLogin = new LonotiAsyncServiceRequest(this);
+		checkLogin.execute(String serverURL, String httpMethod, int timeout, boolean isLonotiRequest, String payload);
+		*/
+		//For now I will call do Task here Once server code is integrated, remove following line.
+		doTask("SUCCESS");
+		
+		/* TODO: Move the GCM registritaion process to appropriate location
+		 * // Make sure the device has the proper dependencies.
         GCMRegistrar.checkDevice(this);
         // Make sure the manifest was properly set
         GCMRegistrar.checkManifest(this);
+        
+        String regId = GCMRegistrar.getRegistrationId(MainActivity.this);
+        // Check if regid already presents
+        if (regId.equals("")) {
+        	// Registration is not present, register now with GCM
+        	GCMRegistrar.register(MainActivity.this, SENDER_ID);
+        } 
         
 		final Button button = (Button) findViewById(R.id.loginButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	
             	String regId = GCMRegistrar.getRegistrationId(MainActivity.this);
-            	// Check if regid already presents
-                if (regId.equals("")) {
-                    // Registration is not present, register now with GCM
-                    GCMRegistrar.register(MainActivity.this, SENDER_ID);
-                } else {
-                	//TODO: uncomment below line after testing
-                	//GCMRegistrar.unregister(MainActivity.this);
-                    // Device is already registered on GCM so update it to server while registering
-                    if (GCMRegistrar.isRegisteredOnServer(MainActivity.this)) {
-                        // This only means that the regID is set on server also. so don't relay on this
-                        Toast.makeText(getApplicationContext(), "Already registered with GCM with regid" + regId, Toast.LENGTH_LONG).show();
-                    } else {
-                        //TODO: NOt logged In do some thing?                
-                    }
-                }
+            	
                 Intent intent = new Intent(getBaseContext(), HomeActivity.class);
                 finish();
                 startActivity(intent);
@@ -120,6 +121,27 @@ public class MainActivity extends FragmentActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+
+	@Override
+	public void doTask(String response) {
+		//implement the if else appropriately once server code is integrated
+		Intent intent = null;
+		if(response.equals("SUCCESS"))
+		{
+			//Got to Home screen directly
+			intent = new Intent(this, HomeActivity.class);
+		}
+		else
+		{
+			//Got to login screen
+			intent = new Intent(this, LoginActivity.class);
+		}
+		this.startActivity(intent);
+		this.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+		//We dont need this activity any more
+		this.finish();
+		
 	}
 	
 //TODO: Implement destroyer
