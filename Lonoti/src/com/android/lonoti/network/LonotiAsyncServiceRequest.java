@@ -1,6 +1,8 @@
 package com.android.lonoti.network;
 
+import com.android.lonoti.bom.payload.Location;
 import com.android.lonoti.exception.NetworkException;
+import com.android.lonoti.location.LonotiLocationPlaces;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -27,18 +29,43 @@ public class LonotiAsyncServiceRequest extends AsyncTask<Object, Integer, Long>{
 	protected Long doInBackground(Object... arg0) {
 		// TODO Auto-generated method stub
 		
-		if(arg0.length != 6) return null;
-		
 		String response = null;
 		
-		try {
-			response = LonotiServerManager.callServer((String)arg0[0], (String)arg0[1], (Integer) arg0[2], (Boolean) arg0[3], (String) arg0[4]);
-		} catch (NetworkException e) {
-			// TODO Auto-generated catch block
-			Log.e("NetworkException", e.getMessage());
+		if(arg0.length == 6) {
+			
+			try {
+				response = LonotiServerManager.callServer((String)arg0[0], (String)arg0[1], (Integer) arg0[2], (Boolean) arg0[3], (String) arg0[4]);
+				listener.doTask(response);
+			} catch (NetworkException e) {
+				// TODO Auto-generated catch block
+				Log.e("NetworkException", e.getMessage());
+			}
 		}
 		
-		listener.doTask(response);
+		if(arg0.length == 2){
+			
+			if(arg0[0].equals("REFERENCE_SEARCH")){
+				
+				try {
+					Location location = LonotiLocationPlaces.getLocation(arg0[1].toString());
+					listener.doTask(location);
+				} catch (NetworkException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			if(arg0[0].equals("LOCATION_SEARCH")){
+				
+				try {
+					response = LonotiLocationPlaces.getLocationDescription((Location) arg0[1]);
+					listener.doTask(response);
+				} catch (NetworkException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 		
 		return null;
 	}

@@ -14,7 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10" 
-        android:hint="Event Name">
+        android:hint="Event Name"
+        android:layout_marginBottom="3dp">
 
         <requestFocus />
     </EditText>
@@ -25,14 +26,115 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textMultiLine"
-        android:singleLine="false" />
+        android:singleLine="false" 
+        android:layout_marginBottom="10dp"/>
 
-    <AutoCompleteTextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal" 
+        android:layout_marginBottom="3dp">
+        
+        <Spinner
+        android:id="@+id/spinner_event_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:entries="@array/event_type_array"
+        android:prompt="@string/event_type_select_promt"
+        android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/image_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_info_details" 
+            android:contentDescription="Hover"/>
+        
+    </LinearLayout>
+
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal"
+        android:layout_marginBottom="3dp"
+        android:visibility="gone"
+        android:id="@+id/location_layout">
+        
+        <AutoCompleteTextView
         android:id="@+id/autoCompleteTextView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:layout_weight="1"
         android:hint="Type Location"
         />
+
+        <Button
+            android:id="@+id/button_select_location"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@android:drawable/ic_dialog_map"
+            />
+        
+    </LinearLayout>
+
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal"
+        android:layout_marginBottom="3dp">
+        <Button
+        android:id="@+id/button_date_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Select Date" />
+        
+        <Button
+        android:id="@+id/button_time_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Select Time" />
+        
+    </LinearLayout>
+
+    <TextView          
+      android:layout_width="fill_parent" 
+      android:layout_height="1px" 
+      android:background="@android:color/darker_gray"
+      android:layout_marginTop="2dp"
+      android:layout_marginBottom="2dp" />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" 
+        android:id="@+id/layout_day_repeat_select">
+        
+        <TextView
+            android:id="@+id/repeat_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Repeat"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        
+        <TextView
+            android:id="@+id/repeat_text_days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Never"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+    </LinearLayout>
+    
+    <TextView          
+      android:layout_width="fill_parent" 
+      android:layout_height="1px" 
+      android:background="@android:color/darker_gray"
+      android:layout_marginTop="2dp"
+      android:layout_marginBottom="2dp" />
     
 </LinearLayout>
