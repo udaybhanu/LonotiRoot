@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.android.lonoti.R;
 import com.android.lonoti.UserPreferences;
+import com.android.lonoti.bom.payload.Location;
 import com.android.lonoti.dbhelper.DatabaseManager;
 import com.android.lonoti.network.LonotiAsyncServiceRequest;
 import com.android.lonoti.network.LonotiTaskListener;
@@ -141,6 +142,12 @@ public class MainActivity extends FragmentActivity  implements LonotiTaskListene
 		this.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 		//We dont need this activity any more
 		this.finish();
+		
+	}
+
+	@Override
+	public void doTask(Location location) {
+		// TODO Auto-generated method stub
 		
 	}
 	
