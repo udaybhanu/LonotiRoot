@@ -1,0 +1,7 @@
+Intent intent = new Intent("android.provider.Telephony.SMS_RECEIVED");
+			IntentFilter fp = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+			fp.setPriority(20);
+			List<ResolveInfo> infos = getPackageManager().queryBroadcastReceivers(intent, 0);
+			for (ResolveInfo info : infos) {
+			    Log.e("PROIS","Receiver name:" + info.activityInfo.name + "; priority=" + info.priority);
+			}
