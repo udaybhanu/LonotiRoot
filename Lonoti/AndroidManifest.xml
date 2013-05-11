@@ -11,12 +11,11 @@
     <permission
         android:name="com.android.lonoti.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
-    
+
     <!-- GCM connects to Internet Services. -->
     <uses-permission android:name="android.permission.INTERNET" />
-    
     <uses-permission android:name="com.android.lonoti.permission.MAPS_RECEIVE" />
-	<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <!-- GCM requires a Google account. -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
@@ -40,22 +39,22 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS"></uses-permission>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" >
+    </uses-permission>
 
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
-    
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-    
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCb9P8LfK5xI0oTlKtz2OHBlpq59bGVdvU" />
-        
+
         <activity
             android:name="com.android.lonoti.activities.MainActivity"
             android:label="@string/app_name" >
@@ -70,7 +69,7 @@
             android:label="@string/title_activity_home" >
         </activity>
         <activity
-            android:name="com.android.lonoti.EventActivity"
+            android:name="com.android.lonoti.activities.EventActivity"
             android:label="@string/title_activity_envent" >
         </activity>
         <activity
@@ -78,13 +77,12 @@
             android:label="@string/title_activity_notifications" >
         </activity>
 
-        <receiver android:name="com.android.lonoti.SMSReceiver">
-            <intent-filter android:priority="2">
-                <action android:name="android.provider.Telephony.SMS_RECEIVED"></action>
-                
+        <receiver android:name="com.android.lonoti.SMSReceiver" >
+            <intent-filter android:priority="2" >
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" >
+                </action>
             </intent-filter>
         </receiver>
-        
         <receiver
             android:name="com.google.android.gcm.GCMBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
@@ -113,6 +111,14 @@
         <activity
             android:name="com.android.lonoti.activies.map.MapSelectActivity"
             android:label="@string/title_activity_map_select" >
+        </activity>
+        <activity
+            android:name="com.android.lonoti.activities.Home2Activity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name" >
+            <!-- android:theme="@style/FullscreenTheme" > -->
+            <!-- android:theme="@android:style/Theme.NoTitleBar.Fullscreen"> -->
+            
         </activity>
     </application>
 

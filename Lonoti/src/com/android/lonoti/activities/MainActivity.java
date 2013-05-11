@@ -9,7 +9,7 @@ import com.android.lonoti.UserPreferences;
 import com.android.lonoti.bom.payload.Location;
 import com.android.lonoti.dbhelper.DatabaseManager;
 import com.android.lonoti.network.LonotiAsyncServiceRequest;
-import com.android.lonoti.network.LonotiTaskListener;
+import com.android.lonoti.network.ILonotiTaskListener;
 import com.google.android.gcm.GCMRegistrar;
 
 import android.os.Bundle;
@@ -26,7 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity  implements LonotiTaskListener{
+public class MainActivity extends FragmentActivity  implements ILonotiTaskListener{
 	
 	private final String LOG_TAG = getClass().getSimpleName();
 	
@@ -131,7 +131,7 @@ public class MainActivity extends FragmentActivity  implements LonotiTaskListene
 		if(response.equals("SUCCESS"))
 		{
 			//Got to Home screen directly
-			intent = new Intent(this, HomeActivity.class);
+			intent = new Intent(this, Home2Activity.class);
 		}
 		else
 		{

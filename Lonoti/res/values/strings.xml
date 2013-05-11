@@ -16,13 +16,17 @@
     <string name="sign_in">SignIn</string>
     <string name="title_activity_lonoti_event_create">New Event</string>
     <string name="title_activity_map_select">MapSelectActivity</string>
+
     <string-array name="event_type_array">
-        <item >Time Based</item>
-        <item >Location Based</item>
-        <item >Location Time Based</item>
+        <item>Time Based</item>
+        <item>Location Based</item>
+        <item>Location Time Based</item>
     </string-array>
+
     <string name="event_type_select_promt">Type of Event</string>
     <string name="event_item_save">Save</string>
     <string name="ok_string">OK</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

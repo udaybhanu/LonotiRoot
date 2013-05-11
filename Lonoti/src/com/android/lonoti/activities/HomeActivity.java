@@ -2,7 +2,6 @@ package com.android.lonoti.activities;
 
 import java.util.List;
 
-import com.android.lonoti.EventActivity;
 import com.android.lonoti.NotificationsActivity;
 import com.android.lonoti.R;
 import com.android.lonoti.UserPreferences;
@@ -42,14 +41,10 @@ public class HomeActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		//setContentView(R.layout.activity_home);
 		
-		Log.e("AUTHCODE",UserPreferences.getPreferences().getString("authCode", "Authcode Not Present"));
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			ActionBar actionBar = getActionBar();
 			//set the name to profile Name
-			int titleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
-			TextView yourTextView = (TextView)findViewById(titleId);
-			yourTextView.setTextColor(0);
-			yourTextView.setText("Pradeep"); //setTextColor(colorId);
+			this.setTitle("UserName");
 			
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 			String label1 = "Events";

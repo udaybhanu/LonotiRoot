@@ -8,7 +8,7 @@ import com.android.lonoti.activies.map.MapSelectActivity;
 import com.android.lonoti.adapter.PlacesAutoCompleteAdapter;
 import com.android.lonoti.bom.payload.Location;
 import com.android.lonoti.network.LonotiAsyncServiceRequest;
-import com.android.lonoti.network.LonotiTaskListener;
+import com.android.lonoti.network.ILonotiTaskListener;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -220,7 +220,7 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 		String str = (String) arg0.getItemAtPosition(arg2);
 		String reference = adapter.getResults().get(str);
 		
-		AsyncTask<Object, Integer, Long> execute = new LonotiAsyncServiceRequest(new LonotiTaskListener() {
+		AsyncTask<Object, Integer, Long> execute = new LonotiAsyncServiceRequest(new ILonotiTaskListener() {
 			
 			@Override
 			public void doTask(String response) {

@@ -9,7 +9,7 @@ import android.util.Log;
 
 public class LonotiAsyncServiceRequest extends AsyncTask<Object, Integer, Long>{
 
-	LonotiTaskListener listener;
+	ILonotiTaskListener listener;
 	
 	/*
 	 * (non-Javadoc)
@@ -20,7 +20,7 @@ public class LonotiAsyncServiceRequest extends AsyncTask<Object, Integer, Long>{
 	 * 
 	 */
 	
-	public LonotiAsyncServiceRequest(LonotiTaskListener listener) {
+	public LonotiAsyncServiceRequest(ILonotiTaskListener listener) {
 		// TODO Auto-generated constructor stub
 		this.listener = listener;
 	}
