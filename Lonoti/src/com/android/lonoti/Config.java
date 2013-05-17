@@ -17,13 +17,13 @@ public final class Config {
 	public final static String[] weekdays = new DateFormatSymbols().getWeekdays();
 	
 	public final static String[] values = new String[] {
-            weekdays[Calendar.MONDAY],
-            weekdays[Calendar.TUESDAY],
-            weekdays[Calendar.WEDNESDAY],
-            weekdays[Calendar.THURSDAY],
-            weekdays[Calendar.FRIDAY],
-            weekdays[Calendar.SATURDAY],
-            weekdays[Calendar.SUNDAY],
+            "None",
+            "Every Day",
+            "Every Week",
+            "Every 2 Weeks",
+            "Every Month",
+            "Every Year",
+            "Custom",
         };
 	
 }

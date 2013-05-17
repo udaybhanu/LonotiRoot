@@ -13,6 +13,7 @@ import com.android.lonoti.network.LonotiTaskListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.AlertDialog.Builder;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -47,6 +48,7 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 	Button timeButton;
 	LinearLayout locationLayout;
 	Calendar c = Calendar.getInstance();
+	int checkedItem;
 	
 	LinearLayout layout;
 	
@@ -166,29 +168,32 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 				
 				Builder builder = new Builder(LonotiEventCreate.this);
 				builder.setTitle("Repeat");
-				builder.setMultiChoiceItems(
+				
+				builder.setSingleChoiceItems(Config.values, checkedItem, null);
+				
+				
+				
+				/*builder.setMultiChoiceItems(
 						 Config.values, mDaysOfWeek,
 			                new DialogInterface.OnMultiChoiceClickListener() {
 			                    public void onClick(DialogInterface dialog, int which,
 			                            boolean isChecked) {
 			                        
 			                    }
-			                });
+			                });*/
 				builder.setPositiveButton(R.string.ok_string, new DialogInterface.OnClickListener() {
-
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
+						int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+						checkedItem = selectedPosition;
 						TextView preview = (TextView) layout.findViewById(R.id.repeat_text_days);
 						preview.setText(getRepeatString());
 					}
-
 				}); 
 				builder.show();
-				
 			}
 		});
-		
 		//startActivityForResult(getIntent(), requestCode)
 	}
 
@@ -264,7 +269,7 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 	
 	private String getRepeatString(){
 		
-		StringBuffer sb = new StringBuffer();
+		/*StringBuffer sb = new StringBuffer();
 		
 		int j = 0;
 		
@@ -281,7 +286,10 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 			sb.replace(sb.lastIndexOf(","), sb.length(), "");
 		}
 		
-		return sb.toString();
+		return sb.toString();*/
+		
+		return Config.values[checkedItem];
+		
 	}
 	
 }
