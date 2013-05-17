@@ -1,6 +1,11 @@
-package com.android.lonoti;
+package com.android.lonoti.activities;
 
 import java.util.List;
+
+import com.android.lonoti.NotificationsActivity;
+import com.android.lonoti.R;
+import com.android.lonoti.UserPreferences;
+import com.android.lonoti.R.menu;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -13,12 +18,14 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 @SuppressLint("NewApi")
 public class HomeActivity extends FragmentActivity {
@@ -34,9 +41,10 @@ public class HomeActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		//setContentView(R.layout.activity_home);
 		
-		Log.e("AUTHCODE",UserPreferences.getPreferences().getString("authCode", "Authcode Not Present"));
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			ActionBar actionBar = getActionBar();
+			//set the name to profile Name
+			this.setTitle("UserName");
 			
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 			String label1 = "Events";
@@ -47,13 +55,6 @@ public class HomeActivity extends FragmentActivity {
 			tab.setTabListener(tl);
 			
 			actionBar.addTab(tab);
-			Intent intent = new Intent("android.provider.Telephony.SMS_RECEIVED");
-			IntentFilter fp = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
-			fp.setPriority(20);
-			List<ResolveInfo> infos = getPackageManager().queryBroadcastReceivers(intent, 0);
-			for (ResolveInfo info : infos) {
-			    Log.e("PROIS","Receiver name:" + info.activityInfo.name + "; priority=" + info.priority);
-			}
 			
 			String label2 = "Notifications";
 			tab = actionBar.newTab();

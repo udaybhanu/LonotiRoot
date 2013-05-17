@@ -1,8 +1,10 @@
-package com.android.lonoti;
+package com.android.lonoti.activities;
 
 import java.util.ArrayList;
 
-import com.android.lonoti.activities.LonotiEventCreate;
+import com.android.lonoti.R;
+import com.android.lonoti.R.id;
+import com.android.lonoti.R.layout;
 import com.android.lonoti.adapter.EventListAdapter;
 import com.android.lonoti.adapter.data.EventRowData;
 

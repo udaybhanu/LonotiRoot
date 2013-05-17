@@ -14,7 +14,7 @@ import com.android.lonoti.bom.payload.Location;
 import com.android.lonoti.exception.NetworkException;
 import com.android.lonoti.location.LonotiLocationPlaces;
 import com.android.lonoti.network.LonotiAsyncServiceRequest;
-import com.android.lonoti.network.LonotiTaskListener;
+import com.android.lonoti.network.ILonotiTaskListener;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -102,7 +102,7 @@ public class MapSelectActivity extends FragmentActivity {
 				
 				Location location = new Location(String.valueOf(marker.getPosition().latitude), String.valueOf(marker.getPosition().longitude), "");
 				
-				AsyncTask<Object, Integer, Long> execute = new LonotiAsyncServiceRequest(new LonotiTaskListener() {
+				AsyncTask<Object, Integer, Long> execute = new LonotiAsyncServiceRequest(new ILonotiTaskListener() {
 					
 					@Override
 					public void doTask(String response) {

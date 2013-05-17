@@ -2,7 +2,7 @@ package com.android.lonoti.network;
 
 import com.android.lonoti.bom.payload.Location;
 
-public interface LonotiTaskListener {
+public interface ILonotiTaskListener {
 
 	public void doTask(String response);
 

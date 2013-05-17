@@ -3,20 +3,15 @@ package com.android.lonoti.activities;
 
 import java.net.URLEncoder;
 
-import android.telephony.TelephonyManager;
-import com.android.lonoti.HomeActivity;
 import com.android.lonoti.R;
 import com.android.lonoti.UserPreferences;
-import com.android.lonoti.bom.Request;
 import com.android.lonoti.bom.payload.Login;
 import com.android.lonoti.bom.payload.LoginResponse;
-import com.android.lonoti.network.LonotiServerManager;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
