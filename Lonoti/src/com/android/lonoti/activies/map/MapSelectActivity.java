@@ -255,4 +255,13 @@ public class MapSelectActivity extends FragmentActivity {
 	public String getMarkerDescription() {
 		return markerDescription;
 	}
+	
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		setResult(RESULT_CANCELED);
+		super.onBackPressed();
+		finish();
+	}
+	
 }

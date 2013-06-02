@@ -26,4 +26,6 @@ public final class Config {
             "Custom",
         };
 	
+	public final static String LOCATION_ICON_STRING = "%LOC%";
+	
 }

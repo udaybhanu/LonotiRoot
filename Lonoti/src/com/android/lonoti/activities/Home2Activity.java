@@ -1,11 +1,14 @@
 package com.android.lonoti.activities;
 
 
+import com.android.lonoti.R;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -14,6 +17,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -84,6 +88,21 @@ public class Home2Activity extends Activity {
         otherBtn.setLayoutParams(lp);
         buttonsLayout.addView(otherBtn);
         otherBtn.setLeft(200);
+        
+        ImageButton createEventButton = new ImageButton(this);
+        //Button createEventButton = new Button(this);
+        createEventButton.setImageResource(android.R.drawable.ic_menu_add);
+        //createEventButton.setBackgroundResource(android.R.drawable.ic_menu_add);
+        createEventButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(context, LonotiEventCreate.class);
+				startActivity(intent);
+			}
+		});
+        buttonsLayout.addView(createEventButton);
         baap.addView(buttonsLayout);
 	}
 	
