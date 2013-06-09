@@ -16,7 +16,7 @@ public final class Config {
 	public final static String SERVER_URL_AUTOCOMPLETE = "https://maps.googleapis.com/maps/api/place/autocomplete/json";
 	public final static String SERVER_URL_LOCATION_DETAILS = "https://maps.googleapis.com/maps/api/place/details/json";
 	public final static String REGISTER_URL = "https://lonoti.herokuapp.com/api/users";
-	public final static String EVENT_NEW_URL = "";
+	public final static String EVENT_NEW_URL = "https://lonoti.herokuapp.com/api/events";
 	
 	public final static String DUMMY_USER = "user@test.com";
 	public final static String DUMMY_PASSWORD = "password";
