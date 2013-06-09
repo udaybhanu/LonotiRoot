@@ -13,13 +13,13 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
@@ -117,6 +117,24 @@ public void onTabUnselected(Tab tab, FragmentTransaction ft) {
 
 public void onTabReselected(Tab tab, FragmentTransaction ft) {
 	// User selected the already selected tab. Usually do nothing.
+}
+
+@Override
+public void onTabReselected(Tab arg0, android.app.FragmentTransaction arg1) {
+	// TODO Auto-generated method stub
+	
+}
+
+@Override
+public void onTabSelected(Tab arg0, android.app.FragmentTransaction arg1) {
+	// TODO Auto-generated method stub
+	
+}
+
+@Override
+public void onTabUnselected(Tab arg0, android.app.FragmentTransaction arg1) {
+	// TODO Auto-generated method stub
+	
 }
 }
 

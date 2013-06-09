@@ -8,7 +8,8 @@
  <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="0dp" 
+        android:layout_weight="3">
 
 <LinearLayout
     android:layout_width="match_parent"
@@ -235,6 +236,36 @@
         
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp">
+
+        <Button
+            android:id="@+id/button_event_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save" 
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginRight="7dp"
+            android:background="@drawable/blue_button"/>
+
+        <Button
+            android:id="@+id/button_event_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel" 
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginLeft="7dp"
+            android:background="@drawable/blue_button"/>
+        
+    </LinearLayout>
 
     
 </LinearLayout>
@@ -243,9 +274,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
+        android:layout_height="0dp"
+        android:layout_weight="1" 
         android:orientation="horizontal"
-        android:background="@drawable/border_item_create">
+        android:background="@drawable/border_item_create"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp">
 
         <TextView
         android:id="@+id/alert"
@@ -262,36 +298,6 @@
         android:text="Alert2!"
         android:textAppearance="?android:attr/textAppearanceMedium" 
         android:layout_weight="1"/>
-        
-    </LinearLayout>
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:orientation="horizontal"
-        android:background="@drawable/border_item_create"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="3dp">
-
-        <Button
-            android:id="@+id/button_event_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save" 
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:paddingRight="10dp"/>
-
-        <Button
-            android:id="@+id/button_event_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cancel" 
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:paddingLeft="10dp"/>
         
     </LinearLayout>
 

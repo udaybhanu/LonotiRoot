@@ -31,6 +31,9 @@ public class LonotiEvent extends Payload{
 	@DatabaseField
 	private TimeEvent time;
 	
+	@DatabaseField
+	private String message;
+	
 	@ForeignCollectionField
     public ForeignCollection<FriendEvents> friendEvents;
 	
@@ -39,6 +42,14 @@ public class LonotiEvent extends Payload{
 	//Again there is many-to-many mapping between 
 	/*@DatabaseField(dataType=DataType.SERIALIZABLE) //, foreign = true)
 	private List<Friend> friends = new ArrayList<Friend>();*/
+	
+	public String getMessage() {
+		return message;
+	}
+	
+	public void setMessage(String message) {
+		this.message = message;
+	}
 	
 	public ForeignCollection<FriendEvents> getFriendEvents() {
 		return friendEvents;

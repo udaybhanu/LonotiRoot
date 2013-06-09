@@ -10,9 +10,8 @@ import com.android.lonoti.adapter.data.EventRowData;
 
 import android.os.Bundle;
 import android.annotation.SuppressLint;
-import android.app.Fragment;
-import android.app.ListFragment;
 import android.content.Intent;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-@SuppressLint("NewApi")
 public class EventActivity extends ListFragment {
 
 	//EventListAdapter adapter = null;

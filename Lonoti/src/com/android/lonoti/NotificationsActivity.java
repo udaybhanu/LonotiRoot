@@ -2,9 +2,9 @@ package com.android.lonoti;
 
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v4.app.Fragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,7 +13,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-@SuppressLint("NewApi")
 public class NotificationsActivity extends Fragment {
 
 	@Override

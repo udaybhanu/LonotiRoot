@@ -31,7 +31,7 @@ public class LonotiAsyncServiceRequest extends AsyncTask<Object, Integer, Long>{
 		
 		String response = null;
 		
-		if(arg0.length == 6) {
+		if(arg0.length == 5) {
 			
 			try {
 				response = LonotiServerManager.callServer((String)arg0[0], (String)arg0[1], (Integer) arg0[2], (Boolean) arg0[3], (String) arg0[4]);

@@ -52,10 +52,9 @@ public class MainActivity extends FragmentActivity  implements ILonotiTaskListen
 		checkLogin.execute(String serverURL, String httpMethod, int timeout, boolean isLonotiRequest, String payload);
 		*/
 		//For now I will call do Task here Once server code is integrated, remove following line.
-		doTask("SUCCESS");
 		
 		/* TODO: Move the GCM registritaion process to appropriate location
-		 * // Make sure the device has the proper dependencies.
+		 * // Make sure the device has the proper dependencies.*/
         GCMRegistrar.checkDevice(this);
         // Make sure the manifest was properly set
         GCMRegistrar.checkManifest(this);
@@ -67,7 +66,9 @@ public class MainActivity extends FragmentActivity  implements ILonotiTaskListen
         	GCMRegistrar.register(MainActivity.this, SENDER_ID);
         } 
         
-		final Button button = (Button) findViewById(R.id.loginButton);
+        doTask("SUCCESS");
+        
+		/*final Button button = (Button) findViewById(R.id.loginButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	

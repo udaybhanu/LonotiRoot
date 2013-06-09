@@ -194,6 +194,7 @@ public class MapSelectActivity extends FragmentActivity {
 				intent.putExtra("lonoti_location_latitude", marker.getPosition().latitude);
 				intent.putExtra("lonoti_location_longitude", marker.getPosition().longitude);
 				intent.putExtra("lonoti_location_description", markerDescription);
+				intent.putExtra("lonoti_location_radius", radiusText.getText().toString());
 				setResult(RESULT_OK,intent);
 				//startActivity(intent);
 				finish();

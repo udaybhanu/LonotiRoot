@@ -5,9 +5,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.telephony.TelephonyManager;
 import android.util.Log;
  
 import com.android.lonoti.activities.MainActivity;
+import com.android.lonoti.exception.NetworkException;
+import com.android.lonoti.network.LonotiServerManager;
 import com.google.android.gcm.GCMBaseIntentService;
  
 import static com.android.lonoti.Config.SENDER_ID;
@@ -27,6 +30,19 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onRegistered(Context context, String registrationId) {
         Log.i(TAG, "Device registered: regId = " + registrationId);
         //TODO Decision on sending registration id to server based on auth token
+        
+        TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE); 
+        String number = tm.getLine1Number();
+        
+        String serverUrl = Config.REGISTER_URL + "?email=" + Config.DUMMY_USER + "&password=" + Config.DUMMY_PASSWORD + "&registration_id=" + registrationId + "&phone_number=" + number;
+        
+        try {
+			LonotiServerManager.callServer(serverUrl, "POST", 30000, true, "");
+		} catch (NetworkException e) {
+			// TODO Auto-generated catch block
+			Log.e("NetworkException", e.getMessage());
+		}
+        
     }
  
     /**

@@ -1,7 +1,11 @@
 package com.android.lonoti.activities;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,8 +15,17 @@ import com.android.lonoti.R;
 import com.android.lonoti.activies.map.MapSelectActivity;
 import com.android.lonoti.adapter.PlacesAutoCompleteAdapter;
 import com.android.lonoti.bom.payload.Location;
+import com.android.lonoti.bom.payload.LonotiEvent;
+import com.android.lonoti.bom.payload.TimeEvent;
 import com.android.lonoti.network.LonotiAsyncServiceRequest;
 import com.android.lonoti.network.ILonotiTaskListener;
+import com.android.lonoti.network.data.LonotiEventServerData;
+import com.android.lonoti.network.data.LonotiEventServerData.LonotiEventServerFriends;
+import com.android.lonoti.network.data.LonotiEventServerData.LonotiEventServerLocation;
+import com.android.lonoti.network.data.LonotiEventServerData.LonotiEventServerPayload;
+import com.android.lonoti.network.data.LonotiEventServerData.LonotiEventServerTime;
+import com.google.gson.Gson;
+import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,6 +46,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +67,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
+import android.widget.Toast;
 
 public class LonotiEventCreate extends Activity implements OnItemClickListener{
 
@@ -62,6 +77,7 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 	TextView descriptionText;
 	AutoCompleteTextView autoComplete;
 	Location location;
+	String reference;
 	Spinner eventType;
 	Button dateButton;
 	Button timeButton;
@@ -77,6 +93,11 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 	Spinner templateListView;
 	Map<String, String> TemplateMap;
 	EditText messageText;
+	
+	Button buttonSave;
+	Button buttonCancel;
+	
+	boolean[] mDaysOfWeek = {false, false, false, false, false, false, false};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -259,24 +280,24 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 				Builder builder = new Builder(LonotiEventCreate.this);
 				builder.setTitle("Repeat");
 				
-				builder.setSingleChoiceItems(Config.values, checkedItem, null);
+				//builder.setSingleChoiceItems(Config.values, checkedItem, null);
 				
 				
 				
-				/*builder.setMultiChoiceItems(
+				builder.setMultiChoiceItems(
 						 Config.values, mDaysOfWeek,
 			                new DialogInterface.OnMultiChoiceClickListener() {
 			                    public void onClick(DialogInterface dialog, int which,
 			                            boolean isChecked) {
 			                        
 			                    }
-			                });*/
+			                });
 				builder.setPositiveButton(R.string.ok_string, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						// TODO Auto-generated method stub
-						int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
-						checkedItem = selectedPosition;
+						//int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+						//checkedItem = selectedPosition;
 						TextView preview = (TextView) layout.findViewById(R.id.repeat_text_days);
 						preview.setText(getRepeatString());
 					}
@@ -321,9 +342,208 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 				addLocationImage();
 			}
 		});
+		
+		
+		buttonSave = (Button) findViewById(R.id.button_event_save);
+		buttonSave.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				saveEvent();
+			}
+		});
+		
 	}
 
 	
+	protected void saveEvent() {
+		// TODO Auto-generated method stub
+		
+		// Save into DB
+		
+		boolean invalidData = false;
+		
+		LonotiEvent event = new LonotiEvent();
+		TimeEvent time = new TimeEvent();
+		
+		
+		LonotiEventServerData data = new LonotiEventServerData();
+		
+		data.setAction(0);
+		data.setStatus(0);
+		
+		LonotiEventServerPayload payload = data.new LonotiEventServerPayload();
+		LonotiEventServerTime serverTime = data.new LonotiEventServerTime();
+		
+		String name = nameText.getText().toString();
+		
+		if(name.length() == 0){
+			invalidData = true;
+			nameText.setError("Name is required");
+		}else{
+			event.setName(name);
+			payload.setTitle(name);
+		}
+		
+		
+		String description = descriptionText.getText().toString();
+		
+		if(description.length() == 0){
+			invalidData = true;
+			descriptionText.setError("Description is required");
+		}else{
+			event.setDescription(description);
+		}
+		
+		String message = messageText.getText().toString();
+		
+		if(message.length() == 0){
+			invalidData = true;
+			messageText.setError("Message is required");
+		}else{
+			event.setMessage(message);
+			payload.setMessage(message);
+		}
+		
+		String date = dateButton.getText().toString();
+		String timedata = timeButton.getText().toString();
+		String finalTime = "";
+		
+		if(date.length() != 0 && date.equals("Select Date")){
+			invalidData = true;
+			dateButton.setError("Date is required");
+		}else{
+			finalTime = finalTime + date;
+			try {
+				Date dateExtracted = Config.dateFormat.parse(date);
+				serverTime.setDate_sec(dateExtracted.getTime());
+				
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if(timedata.length() != 0 && timedata.equals("Select Time")){
+			invalidData = true;
+			timeButton.setError("Time is required");
+		}else{
+			finalTime = finalTime + " " + timedata; 
+			try {
+				Date dateExtracted = Config.timeFormat.parse(timedata);
+				Integer timeInminutes = dateExtracted.getHours()*60 + dateExtracted.getMinutes();
+				serverTime.setTrigger_time(timeInminutes);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if(!finalTime.equals("")){
+			
+			
+		}
+		
+		if("Time Based".equals(eventType.getSelectedItem())){
+			
+			String locationString = autoComplete.getText().toString();
+			if(locationString.length() == 0){
+				invalidData = true;
+				autoComplete.setError("Location is required");
+			}else{
+				
+				payload.setType(1);
+				LonotiEventServerLocation serLocation = data.new LonotiEventServerLocation();
+				serLocation.setLat(Double.valueOf(location.getLat()));
+				serLocation.setLon(Double.valueOf(location.getLon()));
+				serLocation.setDistance(Integer.parseInt(location.getDistance()));
+				payload.setLocation(serLocation);
+			}
+			
+		}
+		
+		serverTime.setRepeats_on_week(convertRepeat());
+		
+		payload.setTime(serverTime);
+
+		
+		LonotiEventServerFriends friend = data.new LonotiEventServerFriends();
+		friend.setEmail("mrudhu@gmail.com");
+		friend.setMobilenumber("9177023915");
+		
+		payload.getFriends().add(friend);
+
+		
+		if(!invalidData){
+			Toast.makeText(this, "Invalid Data", 400);
+			return;
+		}
+		
+		
+		// Send it to server
+		data.setPayload(payload);
+		Gson gson = new Gson();
+		String jsonRequest = gson.toJson(data);
+
+		Log.i("Json Request : ", jsonRequest);
+		
+		System.out.println(jsonRequest);
+		
+		LonotiAsyncServiceRequest asyncRequet = new LonotiAsyncServiceRequest(new ILonotiTaskListener() {
+			
+			@Override
+			public void doTask(Location location) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void doTask(String response) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		String url = Config.EVENT_NEW_URL + "?data=";
+		try {
+			url = url + URLEncoder.encode(Base64.encode(jsonRequest.getBytes()), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		asyncRequet.execute(url, "POST", 30000, true, "");
+		
+		Toast.makeText(this, "Event Saved", 400);
+		
+		Intent intent = null;
+		intent = new Intent(this, Home2Activity.class);
+		this.startActivity(intent);
+		this.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+		this.finish();
+		
+	}
+	
+	
+	private String convertRepeat(){
+		
+		StringBuffer sb = new StringBuffer();
+		
+		for(int i = 0; i < mDaysOfWeek.length - 1 ; i ++ ){
+			if(mDaysOfWeek[i]){
+				sb.append(i + ",");
+			}
+		}
+		
+		if(!sb.toString().equals("")){
+			return sb.substring(0, sb.length() - 1);
+		}
+		
+		return "";
+	}
+
+
 	private void includeImageSpans(String text){
 		
 		SpannableStringBuilder ssb = new SpannableStringBuilder();
@@ -388,9 +608,11 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 			Double lattitude = data.getDoubleExtra("lonoti_location_latitude", 0.00);
 			Double longitude = data.getDoubleExtra("lonoti_location_longitude", 0.00);
 			String description = data.getStringExtra("lonoti_location_description");
+			String radius = data.getStringExtra("lonoti_location_radius");
 			location.setLat(String.valueOf(lattitude));
 			location.setLon(String.valueOf(longitude));
 			location.setLocdescrition(description);
+			location.setDistance(radius);
 			autoComplete.setText(description);
 		}
 		
@@ -408,7 +630,7 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		// TODO Auto-generated method stub
 		String str = (String) arg0.getItemAtPosition(arg2);
-		String reference = adapter.getResults().get(str);
+		reference = adapter.getResults().get(str);
 		
 		AsyncTask<Object, Integer, Long> execute = new LonotiAsyncServiceRequest(new ILonotiTaskListener() {
 			
@@ -422,6 +644,7 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 			public void doTask(Location loc) {
 				// TODO Auto-generated method stub
 				location = loc;
+				location.setReference(reference);
 			}
 		});
 		
@@ -454,7 +677,7 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 	
 	private String getRepeatString(){
 		
-		/*StringBuffer sb = new StringBuffer();
+		StringBuffer sb = new StringBuffer();
 		
 		int j = 0;
 		
@@ -467,13 +690,16 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 		
 		if( j == 0){
 			sb.append("Never");
-		} else{
+		} else if( j == 7){
+			return "Every day";
+		}
+		else{
 			sb.replace(sb.lastIndexOf(","), sb.length(), "");
 		}
 		
-		return sb.toString();*/
+		return sb.toString();
 		
-		return Config.values[checkedItem];
+		//return Config.values[checkedItem];
 		
 	}
 	

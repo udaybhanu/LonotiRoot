@@ -5,13 +5,14 @@ import com.android.lonoti.R;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.FragmentTransaction;
-import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -29,8 +30,7 @@ import android.widget.Toast;
  * 
  * @see SystemUiHider
  */
-@SuppressLint("NewApi")
-public class Home2Activity extends Activity {
+public class Home2Activity extends FragmentActivity {
 	private static final int HOME_VIEW_ID = 0101010;
 	private static final int TITLE_VIEW_ID = 0101011;
 	private static final int BUTTONS_VIEW_ID = 0101012;
@@ -87,7 +87,7 @@ public class Home2Activity extends Activity {
         });
         otherBtn.setLayoutParams(lp);
         buttonsLayout.addView(otherBtn);
-        otherBtn.setLeft(200);
+        //otherBtn.setLeft(200);
         
         ImageButton createEventButton = new ImageButton(this);
         //Button createEventButton = new Button(this);
@@ -141,7 +141,7 @@ public class Home2Activity extends Activity {
         LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(
 	            LinearLayout.LayoutParams.MATCH_PARENT,
 	            LinearLayout.LayoutParams.WRAP_CONTENT,0.1f);
-        otherBtn.setLeft(200);
+        //otherBtn.setLeft(200);
         baap.addView(buttonsLayout);
 	}
 	protected void addEvents()
@@ -265,7 +265,7 @@ public class Home2Activity extends Activity {
 		addBottomButtons(baap);
 		setContentView(baap, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		
-		ft = getFragmentManager().beginTransaction();
+		ft = getSupportFragmentManager().beginTransaction();
 		
 		addEvents();
 		addNotifications();

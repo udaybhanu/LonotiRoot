@@ -18,6 +18,9 @@ public class Location {
 	private String locdescrition;
 	
 	@DatabaseField
+	private String distance;
+	
+	@DatabaseField
 	private String reference;
 	
 	@ForeignCollectionField
@@ -32,6 +35,15 @@ public class Location {
 		this.lon = lon;
 		this.locdescrition = locdescrition;
 	}
+	
+	public void setDistance(String distance) {
+		this.distance = distance;
+	}
+	
+	public String getDistance() {
+		return distance;
+	}
+	
 	public String getLat() {
 		return lat;
 	}
