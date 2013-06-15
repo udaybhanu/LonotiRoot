@@ -25,7 +25,6 @@ import com.android.lonoti.network.data.LonotiEventServerData.LonotiEventServerLo
 import com.android.lonoti.network.data.LonotiEventServerData.LonotiEventServerPayload;
 import com.android.lonoti.network.data.LonotiEventServerData.LonotiEventServerTime;
 import com.google.gson.Gson;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -46,6 +45,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -507,7 +507,7 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 		
 		String url = Config.EVENT_NEW_URL + "?data=";
 		try {
-			url = url + URLEncoder.encode(Base64.encode(jsonRequest.getBytes()), "UTF-8");
+			url = url + URLEncoder.encode(new String(Base64.encode(jsonRequest.getBytes(), Base64.DEFAULT)), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
