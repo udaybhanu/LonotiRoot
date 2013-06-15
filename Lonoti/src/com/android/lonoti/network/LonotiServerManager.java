@@ -11,24 +11,26 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.net.ssl.HttpsURLConnection;
+
 import com.android.lonoti.exception.NetworkException;
 
 public class LonotiServerManager {
 
 	public static final String SERVER_URL = "https://lonoti.herokuapp.com/api/users/sign_in";
 	
-	public static String callServer(String serverURL, String httpMethod, int timeout, boolean isLonotiRequest, String payload) throws NetworkException{
+	public static String callServer(String serverURL, String httpMethod, int timeout, boolean isLonotiRequest, String payload, boolean isHTTPS) throws NetworkException{
 		
 		if(httpMethod == null) throw new NetworkException("HTTP Method Not specified");
 		
-		if("GET".equals(httpMethod)) return doGet(serverURL, timeout, isLonotiRequest);
+		if("GET".equals(httpMethod)) return doGet(serverURL, timeout, isLonotiRequest, isHTTPS);
 		
-		if("POST".equals(httpMethod)) return doPost(serverURL, timeout, isLonotiRequest, payload);
+		if("POST".equals(httpMethod)) return doPost(serverURL, timeout, isLonotiRequest, payload, isHTTPS);
 		
 		throw new NetworkException("Invalid HTTP request");
 	}
 	
-	private static String doGet(String serverURL, int timeout, boolean isLonotiRequest) throws NetworkException{
+	private static String doGet(String serverURL, int timeout, boolean isLonotiRequest, boolean isHTTPS) throws NetworkException{
 		
 		try {
 			URL url = new URL(serverURL);
@@ -62,12 +64,19 @@ public class LonotiServerManager {
 		
 	}
 	
-	private static String doPost(String serverURL, int timeout, boolean isLonotiRequest, String payload) throws NetworkException{
+	private static String doPost(String serverURL, int timeout, boolean isLonotiRequest, String payload, boolean isHTTPS) throws NetworkException{
 		
 		URL url;
 		try {
 			url = new URL(serverURL);
-			HttpURLConnection httpcon = (HttpURLConnection) (url.openConnection());
+			HttpURLConnection httpcon;
+			
+			if(isHTTPS){
+				httpcon = (HttpsURLConnection) (url.openConnection());
+			}else{
+				httpcon = (HttpURLConnection) (url.openConnection());
+			}
+			
 			httpcon.setConnectTimeout(45000);
 			httpcon.setReadTimeout(45000);
 			httpcon.setDoInput(true);
@@ -111,6 +120,10 @@ public class LonotiServerManager {
 		
 	}
 
-	
+	public static void main(String args[]) throws NetworkException{
+		
+		LonotiServerManager.callServer("https://lonoti.herokuapp.com/api/users?email=mrudhukar.batchu@chronus.com&password=test123456", "POST", 3000, true, "", true);
+		
+	}
 	
 }

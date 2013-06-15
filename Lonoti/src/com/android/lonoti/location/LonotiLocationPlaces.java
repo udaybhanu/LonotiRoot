@@ -28,7 +28,7 @@ public class LonotiLocationPlaces {
 		
 		try 
 		{	
-			String jsonResults = LonotiServerManager.callServer(SERVER_URL_AUTOCOMPLETE + "?input="+ URLEncoder.encode(key, "utf8") +"&sensor=false&key=AIzaSyBy_w78WsrAv96w81nDRjl2LLWX2ob09wQ", "GET", 45000, false, null);
+			String jsonResults = LonotiServerManager.callServer(SERVER_URL_AUTOCOMPLETE + "?input="+ URLEncoder.encode(key, "utf8") +"&sensor=false&key=AIzaSyBy_w78WsrAv96w81nDRjl2LLWX2ob09wQ", "GET", 45000, false, null, false);
 			JSONObject jsonObj = new JSONObject(jsonResults.toString());
 	        JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
 	        
@@ -57,7 +57,7 @@ public class LonotiLocationPlaces {
 		
 		try 
 		{	
-			String jsonResults = LonotiServerManager.callServer(SERVER_URL_AUTOCOMPLETE + "?input="+ URLEncoder.encode(key, "utf8") +"&sensor=false&key=AIzaSyBy_w78WsrAv96w81nDRjl2LLWX2ob09wQ", "GET", 45000, false, null);
+			String jsonResults = LonotiServerManager.callServer(SERVER_URL_AUTOCOMPLETE + "?input="+ URLEncoder.encode(key, "utf8") +"&sensor=false&key=AIzaSyBy_w78WsrAv96w81nDRjl2LLWX2ob09wQ", "GET", 45000, false, null, false);
 			JSONObject jsonObj = new JSONObject(jsonResults.toString());
 	        JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
 	        
@@ -89,7 +89,7 @@ public class LonotiLocationPlaces {
 		com.android.lonoti.bom.payload.Location location = new com.android.lonoti.bom.payload.Location();
 		
 		try {
-			String jsonResults = LonotiServerManager.callServer(SERVER_URL_LOCATION_DETAILS + "?reference="+ URLEncoder.encode(reference, "utf8") +"&sensor=false&key=AIzaSyBy_w78WsrAv96w81nDRjl2LLWX2ob09wQ", "GET", 45000, false, null);
+			String jsonResults = LonotiServerManager.callServer(SERVER_URL_LOCATION_DETAILS + "?reference="+ URLEncoder.encode(reference, "utf8") +"&sensor=false&key=AIzaSyBy_w78WsrAv96w81nDRjl2LLWX2ob09wQ", "GET", 45000, false, null, false);
 			JSONObject jsonObj = new JSONObject(jsonResults.toString());
 	        String status = jsonObj.getString("status");
 	        
@@ -129,7 +129,7 @@ public class LonotiLocationPlaces {
 	public static String getLocationDescription(Location location) throws NetworkException{
 		
 		try {
-			String jsonResults = LonotiServerManager.callServer(SERVER_URL_LOCATION_DETAILS_SEARCH + "?location="+ location.getLat() + "," + location.getLon() + "&radius=50" + "&sensor=false&key=AIzaSyBy_w78WsrAv96w81nDRjl2LLWX2ob09wQ", "GET", 45000, false, null);
+			String jsonResults = LonotiServerManager.callServer(SERVER_URL_LOCATION_DETAILS_SEARCH + "?location="+ location.getLat() + "," + location.getLon() + "&radius=50" + "&sensor=false&key=AIzaSyBy_w78WsrAv96w81nDRjl2LLWX2ob09wQ", "GET", 45000, false, null, false);
 			JSONObject jsonObj;
 			jsonObj = new JSONObject(jsonResults.toString());
 			String status = jsonObj.getJSONObject("status").toString();

@@ -34,10 +34,10 @@ public class GCMIntentService extends GCMBaseIntentService {
         TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE); 
         String number = tm.getLine1Number();
         
-        String serverUrl = Config.REGISTER_URL + "?email=" + Config.DUMMY_USER + "&password=" + Config.DUMMY_PASSWORD + "&registration_id=" + registrationId + "&phone_number=" + number;
+        String serverUrl = Config.REGISTER_URL;
         
         try {
-			LonotiServerManager.callServer(serverUrl, "POST", 30000, true, "");
+			LonotiServerManager.callServer(serverUrl, "POST", 30000, true, "email=" + Config.DUMMY_USER + "&password=" + Config.DUMMY_PASSWORD + "&registration_id=" + registrationId + "&phone_number=" + number, true);
 		} catch (NetworkException e) {
 			// TODO Auto-generated catch block
 			Log.e("NetworkException", e.getMessage());

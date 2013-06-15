@@ -34,7 +34,7 @@ public class LonotiAsyncServiceRequest extends AsyncTask<Object, Integer, Long>{
 		if(arg0.length == 5) {
 			
 			try {
-				response = LonotiServerManager.callServer((String)arg0[0], (String)arg0[1], (Integer) arg0[2], (Boolean) arg0[3], (String) arg0[4]);
+				response = LonotiServerManager.callServer((String)arg0[0], (String)arg0[1], (Integer) arg0[2], (Boolean) arg0[3], (String) arg0[4], true);
 				listener.doTask(response);
 			} catch (NetworkException e) {
 				// TODO Auto-generated catch block

@@ -505,15 +505,16 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 			}
 		});
 		
-		String url = Config.EVENT_NEW_URL + "?data=";
+		String url = Config.EVENT_NEW_URL;
+		String serverPayload = null;
 		try {
-			url = url + URLEncoder.encode(new String(Base64.encode(jsonRequest.getBytes(), Base64.DEFAULT)), "UTF-8");
+			serverPayload = URLEncoder.encode(new String(Base64.encode(jsonRequest.getBytes(), Base64.DEFAULT)), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		asyncRequet.execute(url, "POST", 30000, true, "");
+		asyncRequet.execute(url, "POST", 30000, true, "data=" + serverPayload);
 		
 		Toast.makeText(this, "Event Saved", 400);
 		
