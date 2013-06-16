@@ -445,7 +445,7 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 			
 		}
 		
-		if("Time Based".equals(eventType.getSelectedItem())){
+		if(!"Time Based".equals(eventType.getSelectedItem())){
 			
 			String locationString = autoComplete.getText().toString();
 			if(locationString.length() == 0){
@@ -461,6 +461,10 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 				payload.setLocation(serLocation);
 			}
 			
+		}else{
+			
+			payload.setType(0);
+			
 		}
 		
 		serverTime.setRepeats_on_week(convertRepeat());
@@ -470,12 +474,12 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 		
 		LonotiEventServerFriends friend = data.new LonotiEventServerFriends();
 		friend.setEmail("mrudhu@gmail.com");
-		friend.setMobilenumber("9177023915");
+		friend.setPhone_number("9177023915");
 		
 		payload.getFriends().add(friend);
 
 		
-		if(!invalidData){
+		if(invalidData){
 			Toast.makeText(this, "Invalid Data", 400);
 			return;
 		}
@@ -507,12 +511,10 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 		
 		String url = Config.EVENT_NEW_URL;
 		String serverPayload = null;
-		try {
-			serverPayload = URLEncoder.encode(new String(Base64.encode(jsonRequest.getBytes(), Base64.DEFAULT)), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+			System.out.println(new String(Base64.encodeToString(jsonRequest.getBytes(), Base64.NO_WRAP)));
+			serverPayload = new String(Base64.encodeToString(jsonRequest.getBytes(), Base64.NO_WRAP));
+			//serverPayload = URLEncoder.encode(new String(Base64.encodeToString(jsonRequest.getBytes(), Base64.DEFAULT)), "UTF-8");
 		
 		asyncRequet.execute(url, "POST", 30000, true, "data=" + serverPayload);
 		

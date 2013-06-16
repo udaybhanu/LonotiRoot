@@ -146,13 +146,14 @@ public class LonotiEventServerData {
 	
 	public class LonotiEventServerFriends{
 		
-		private String mobilenumber;
+		private String phone_number;
 		private String email;
-		public String getMobilenumber() {
-			return mobilenumber;
+		
+		public String getPhone_number() {
+			return phone_number;
 		}
-		public void setMobilenumber(String mobilenumber) {
-			this.mobilenumber = mobilenumber;
+		public void setPhone_number(String phone_number) {
+			this.phone_number = phone_number;
 		}
 		public String getEmail() {
 			return email;

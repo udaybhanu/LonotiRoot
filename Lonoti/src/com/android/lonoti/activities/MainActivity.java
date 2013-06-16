@@ -4,13 +4,18 @@ import static com.android.lonoti.Config.SENDER_ID;
 
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.android.lonoti.Config;
 import com.android.lonoti.R;
 import com.android.lonoti.UserPreferences;
 import com.android.lonoti.bom.payload.Location;
 import com.android.lonoti.dbhelper.DatabaseManager;
+import com.android.lonoti.exception.NetworkException;
 import com.android.lonoti.network.LonotiAsyncServiceRequest;
 import com.android.lonoti.network.ILonotiTaskListener;
+import com.android.lonoti.network.LonotiServerManager;
 import com.google.android.gcm.GCMRegistrar;
 
 import android.os.Bundle;
@@ -19,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.support.v4.app.FragmentActivity;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -30,6 +36,8 @@ import android.widget.Toast;
 public class MainActivity extends FragmentActivity  implements ILonotiTaskListener{
 	
 	private final String LOG_TAG = getClass().getSimpleName();
+	
+	String regId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +52,7 @@ public class MainActivity extends FragmentActivity  implements ILonotiTaskListen
 		//Now see if the the current Authcode is valid - if yes Dont show login screen but show Home Screen
 		
 		//Get existing auth code
-		String AuthCode = UserPreferences.getPreferences().getString("authCode", Config.DEFAULT_AUTH_CODE);
+		
 		//Check Auth status by sending a server request with current Authcode and user details
 		//That will call doTask() which will start the appropriate Activity:Home or login 
 		
@@ -56,26 +64,37 @@ public class MainActivity extends FragmentActivity  implements ILonotiTaskListen
 		
 		/* TODO: Move the GCM registritaion process to appropriate location
 		 * // Make sure the device has the proper dependencies.*/
-        GCMRegistrar.checkDevice(this);
+        /*GCMRegistrar.checkDevice(this);
         // Make sure the manifest was properly set
         GCMRegistrar.checkManifest(this);
         
-        String regId = GCMRegistrar.getRegistrationId(MainActivity.this);
+        regId = GCMRegistrar.getRegistrationId(MainActivity.this);*/
         // Check if regid already presents
-        if (regId.equals("")) {
+        /*if (regId.equals("")) {
         	// Registration is not present, register now with GCM
-        	GCMRegistrar.register(MainActivity.this, SENDER_ID);
-        } 
-        
-        if(!AuthCode.equals(Config.DEFAULT_AUTH_CODE)){
+        	//GCMRegistrar.register(MainActivity.this, SENDER_ID);
         	
         	doTask("SUCCESS");
         	
-        }else{
+        }else{*/
         	
+        	String AuthCode = UserPreferences.getPreferences().getString("authCode", Config.DEFAULT_AUTH_CODE);
+            
+            if(!AuthCode.equals(Config.DEFAULT_AUTH_CODE)){
+            	
+            	doTask("SUCCESS");
+            	
+            }else{
+            	
+            	LonotiAsyncServiceRequest asyncRequet = new LonotiAsyncServiceRequest(this);
+            	
+            	asyncRequet.execute(Config.LOGIN_URI, "POST", 30000, true, "email=" + Config.DUMMY_USER +  "&password=" + Config.DUMMY_PASSWORD);
+            	
+            }
         	
-        	
-        }
+        //}
+        
+        
         
 		/*final Button button = (Button) findViewById(R.id.loginButton);
         button.setOnClickListener(new View.OnClickListener() {
@@ -137,17 +156,43 @@ public class MainActivity extends FragmentActivity  implements ILonotiTaskListen
 	@Override
 	public void doTask(String response) {
 		//implement the if else appropriately once server code is integrated
+		
+		if(response == null){
+			TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE); 
+	        String number = tm.getLine1Number();
+			try {
+				
+				response = LonotiServerManager.callServer(Config.REGISTER_URL, "POST", 30000, true, "email=" + Config.DUMMY_USER + "&password=" + Config.DUMMY_PASSWORD + "&registration_id=" + regId + "&phone_number=" + number, true);
+				
+			} catch (NetworkException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			
+		}
+		
+		JSONObject obj;
+		try {
+			obj = new JSONObject(response);
+			String auth_token = obj.getString("auth_token");
+			UserPreferences.getPreferences().put("authCode", auth_token);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		Intent intent = null;
-		if(response.equals("SUCCESS"))
+		intent = new Intent(this, Home2Activity.class);
+		/*if(response.equals("SUCCESS"))
 		{
 			//Got to Home screen directly
-			intent = new Intent(this, Home2Activity.class);
+			
 		}
 		else
 		{
 			//Got to login screen
 			intent = new Intent(this, LoginActivity.class);
-		}
+		}*/
 		this.startActivity(intent);
 		this.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 		//We dont need this activity any more

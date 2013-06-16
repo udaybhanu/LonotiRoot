@@ -13,6 +13,8 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import com.android.lonoti.Config;
+import com.android.lonoti.UserPreferences;
 import com.android.lonoti.exception.NetworkException;
 
 public class LonotiServerManager {
@@ -67,9 +69,10 @@ public class LonotiServerManager {
 	private static String doPost(String serverURL, int timeout, boolean isLonotiRequest, String payload, boolean isHTTPS) throws NetworkException{
 		
 		URL url;
+		HttpURLConnection httpcon = null;
 		try {
 			url = new URL(serverURL);
-			HttpURLConnection httpcon;
+			
 			
 			if(isHTTPS){
 				httpcon = (HttpsURLConnection) (url.openConnection());
@@ -81,21 +84,29 @@ public class LonotiServerManager {
 			httpcon.setReadTimeout(45000);
 			httpcon.setDoInput(true);
 			httpcon.setDoOutput(true);
-			if(isLonotiRequest) httpcon.setRequestProperty("Authorization", "Token token=\"fdcfcce343c48d0fef3a032a0a4d251d\"");
+			if(isLonotiRequest) {
+				httpcon.setRequestProperty("Authorization", "Token token=\"fdcfcce343c48d0fef3a032a0a4d251d\"");
+				String auth_code = UserPreferences.getPreferences().getString("authCode", Config.DEFAULT_AUTH_CODE);
+				if(!auth_code.equals(Config.DEFAULT_AUTH_CODE)){
+					payload = payload + "&auth_token=" + auth_code;
+				}
+			}
 			httpcon.setRequestMethod("POST");
-			OutputStreamWriter wr = new OutputStreamWriter(httpcon.getOutputStream());
+			/*OutputStreamWriter wr = new OutputStreamWriter(httpcon.getOutputStream());
 			wr.write(payload);
 			wr.flush();
-			wr.close();
+			wr.close();*/
 			OutputStream os = httpcon.getOutputStream();
 			PrintWriter pw = new PrintWriter(new OutputStreamWriter(os));
 			pw.write(payload);
 			pw.flush();
 			pw.close();
 
-			if(httpcon.getResponseCode() != HttpURLConnection.HTTP_OK){
+			System.out.println(httpcon.getResponseCode());
+			
+			/*if(httpcon.getResponseCode() != HttpURLConnection.HTTP_OK && httpcon.getResponseCode() != HttpURLConnection.HTTP_CREATED && httpcon.getResponseCode() != HttpURLConnection.HTTP_ACCEPTED){
 	        	throw new NetworkException("Code: "+httpcon.getResponseCode()+ "\nMESSAGE: "+ httpcon.getResponseMessage());
-	        }
+	        }*/
 			
 			
 			InputStream is = httpcon.getInputStream();
@@ -114,6 +125,23 @@ public class LonotiServerManager {
 			throw new NetworkException("MalformedURLException", e);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			
+			InputStream error = httpcon.getErrorStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(error));
+			String line = null;
+			StringBuffer sb = new StringBuffer();
+			try {
+				while ((line = reader.readLine()) != null) {
+					sb.append(line);
+				}
+				error.close();
+				httpcon.disconnect();
+				System.out.println(sb.toString());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 			throw new NetworkException("IOException", e);
 		}
 		
