@@ -4,6 +4,7 @@ import static com.android.lonoti.Config.SENDER_ID;
 
 import java.util.List;
 
+import com.android.lonoti.Config;
 import com.android.lonoti.R;
 import com.android.lonoti.UserPreferences;
 import com.android.lonoti.bom.payload.Location;
@@ -43,7 +44,7 @@ public class MainActivity extends FragmentActivity  implements ILonotiTaskListen
 		//Now see if the the current Authcode is valid - if yes Dont show login screen but show Home Screen
 		
 		//Get existing auth code
-		String AuthCode = UserPreferences.getPreferences().getString("authCode", "AuthcodeNotPresent");
+		String AuthCode = UserPreferences.getPreferences().getString("authCode", Config.DEFAULT_AUTH_CODE);
 		//Check Auth status by sending a server request with current Authcode and user details
 		//That will call doTask() which will start the appropriate Activity:Home or login 
 		
@@ -66,7 +67,15 @@ public class MainActivity extends FragmentActivity  implements ILonotiTaskListen
         	GCMRegistrar.register(MainActivity.this, SENDER_ID);
         } 
         
-        doTask("SUCCESS");
+        if(!AuthCode.equals(Config.DEFAULT_AUTH_CODE)){
+        	
+        	doTask("SUCCESS");
+        	
+        }else{
+        	
+        	
+        	
+        }
         
 		/*final Button button = (Button) findViewById(R.id.loginButton);
         button.setOnClickListener(new View.OnClickListener() {
