@@ -64,19 +64,19 @@ public class MainActivity extends FragmentActivity  implements ILonotiTaskListen
 		
 		/* TODO: Move the GCM registritaion process to appropriate location
 		 * // Make sure the device has the proper dependencies.*/
-        /*GCMRegistrar.checkDevice(this);
+        GCMRegistrar.checkDevice(this);
         // Make sure the manifest was properly set
         GCMRegistrar.checkManifest(this);
         
-        regId = GCMRegistrar.getRegistrationId(MainActivity.this);*/
+        regId = GCMRegistrar.getRegistrationId(MainActivity.this);
         // Check if regid already presents
-        /*if (regId.equals("")) {
+        if (regId.equals("")) {
         	// Registration is not present, register now with GCM
         	//GCMRegistrar.register(MainActivity.this, SENDER_ID);
         	
         	doTask("SUCCESS");
         	
-        }else{*/
+        }else{
         	
         	String AuthCode = UserPreferences.getPreferences().getString("authCode", Config.DEFAULT_AUTH_CODE);
             
@@ -92,7 +92,7 @@ public class MainActivity extends FragmentActivity  implements ILonotiTaskListen
             	
             }
         	
-        //}
+        }
         
         
         
