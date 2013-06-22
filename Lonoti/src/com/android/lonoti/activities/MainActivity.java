@@ -72,7 +72,7 @@ public class MainActivity extends FragmentActivity  implements ILonotiTaskListen
         // Check if regid already presents
         if (regId.equals("")) {
         	// Registration is not present, register now with GCM
-        	//GCMRegistrar.register(MainActivity.this, SENDER_ID);
+        	GCMRegistrar.register(MainActivity.this, SENDER_ID);
         	
         	doTask("SUCCESS");
         	
