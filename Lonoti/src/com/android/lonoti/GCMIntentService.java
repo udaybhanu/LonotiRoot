@@ -2,8 +2,6 @@ package com.android.lonoti;
  
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -44,8 +42,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         try {
 			String response = LonotiServerManager.callServer(serverUrl, "POST", 30000, true, "email=" + Config.DUMMY_USER + "&password=" + Config.DUMMY_PASSWORD + "&registration_id=" + registrationId + "&phone_number=" + number, true);
 			
-			JSONParser jsonParser = new JSONParser();
-			Object obj = jsonParser.parse(response);
+			JSONObject obj = new JSONObject(response);
 			
 			String auth_token = ((JSONObject) obj).getString("auth_token");
 			
@@ -54,9 +51,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 		} catch (NetworkException e) {
 			// TODO Auto-generated catch block
 			Log.e("NetworkException", e.getMessage());
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			Log.e("ParseException", e.getMessage());
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			Log.e("JSONException", e.getMessage());
