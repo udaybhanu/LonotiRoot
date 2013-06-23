@@ -1,6 +1,7 @@
 package com.android.lonoti.activities;
 
 import static com.android.lonoti.Config.SENDER_ID;
+import com.crittercism.app.Crittercism;
 
 import java.util.List;
 
@@ -42,6 +43,31 @@ public class MainActivity extends FragmentActivity  implements ILonotiTaskListen
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		/* Init crittercism */
+		JSONObject crittercismConfig = new JSONObject();
+		try
+		{
+			crittercismConfig.put("includeVersionCode", true);
+			crittercismConfig.put("shouldCollectLogcat", true);
+		}
+		catch (JSONException je){}
+
+		Crittercism.init(getApplicationContext(), Config.CRITTERCISM_APP_ID, crittercismConfig);
+		Crittercism.setUsername("user-mobile-No-notset");
+		// instantiate metadata json object
+		JSONObject metadata = new JSONObject();
+		// add other user and app related metadata
+		try {
+			metadata.put("mobile_no", "notset");
+			metadata.put("name", "not-set");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// send metadata to crittercism (asynchronously)
+		Crittercism.setMetadata(metadata);
 		DatabaseManager.init(this);
 		UserPreferences.getInstance(true, this);
 		setContentView(R.layout.activity_main);
