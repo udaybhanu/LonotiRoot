@@ -3,6 +3,7 @@ package com.android.lonoti.dbhelper;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.android.lonoti.bom.UserData;
 import com.android.lonoti.bom.payload.Friend;
 import com.android.lonoti.bom.payload.FriendEvents;
 import com.android.lonoti.bom.payload.LonotiEvent;
@@ -104,6 +105,17 @@ public class DatabaseManager {
 		}
 		
 	}
+	
+	public void createUserData(UserData userData) {
+		try {
+			getHelper().getUserDataDao().create(userData);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// TODO Auto-generated method stub
+		
+	}
 
 	public List<Friend> getAllFriends() {
 		List<Friend> friends = null;
@@ -124,4 +136,25 @@ public class DatabaseManager {
         }
         return fes;
 	}
+	
+	public UserData getUserData(){
+		
+		try {
+			List<UserData> listUserData = getHelper().getUserDataDao().queryForAll();
+			
+			if(listUserData.size() == 0){
+				return null;
+			}
+			if(listUserData.size() == 1){
+				return listUserData.get(0);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 }

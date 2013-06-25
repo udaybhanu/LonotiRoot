@@ -28,7 +28,7 @@ public class LonotiEvent extends Payload{
 	private String description;
 	@DatabaseField( foreign = true, foreignAutoRefresh=true)
 	private Location location;
-	@DatabaseField
+	@DatabaseField( foreign = true, foreignAutoRefresh=true)
 	private TimeEvent time;
 	
 	@DatabaseField

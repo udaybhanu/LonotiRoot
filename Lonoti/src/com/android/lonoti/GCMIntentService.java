@@ -12,6 +12,8 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
  
 import com.android.lonoti.activities.MainActivity;
+import com.android.lonoti.bom.UserData;
+import com.android.lonoti.dbhelper.DatabaseManager;
 import com.android.lonoti.exception.NetworkException;
 import com.android.lonoti.network.LonotiServerManager;
 import com.google.android.gcm.GCMBaseIntentService;
@@ -34,13 +36,12 @@ public class GCMIntentService extends GCMBaseIntentService {
         Log.i(TAG, "Device registered: regId = " + registrationId);
         //TODO Decision on sending registration id to server based on auth token
         
-        TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE); 
-        String number = tm.getLine1Number();
+        UserData userData = DatabaseManager.getInstance().getUserData();
         
         String serverUrl = Config.REGISTER_URL;
         
         try {
-			String response = LonotiServerManager.callServer(serverUrl, "POST", 30000, true, "email=" + Config.DUMMY_USER + "&password=" + Config.DUMMY_PASSWORD + "&registration_id=" + registrationId + "&phone_number=" + number, true);
+			String response = LonotiServerManager.callServer(serverUrl, "POST", 30000, true, "email=" + userData.getEmail() + "&password=" + Config.DUMMY_PASSWORD + "&registration_id=" + registrationId + "&phone_number=" + userData.getPhonenumber(), true);
 			
 			JSONObject obj = new JSONObject(response);
 			

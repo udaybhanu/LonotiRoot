@@ -11,9 +11,12 @@ import org.json.JSONObject;
 import com.android.lonoti.Config;
 import com.android.lonoti.R;
 import com.android.lonoti.UserPreferences;
+import com.android.lonoti.bom.UserData;
 import com.android.lonoti.bom.payload.Location;
 import com.android.lonoti.dbhelper.DatabaseManager;
 import com.android.lonoti.exception.NetworkException;
+import com.android.lonoti.fragments.GetDetailsDialogFragment;
+import com.android.lonoti.listeners.GetDetailsDialogListener;
 import com.android.lonoti.network.LonotiAsyncServiceRequest;
 import com.android.lonoti.network.ILonotiTaskListener;
 import com.android.lonoti.network.LonotiServerManager;
@@ -25,6 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
@@ -34,143 +38,36 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity  implements ILonotiTaskListener{
+public class MainActivity extends FragmentActivity  implements ILonotiTaskListener, GetDetailsDialogListener{
 	
 	private final String LOG_TAG = getClass().getSimpleName();
 	
+	private UserData userData;
+	
 	String regId;
+	
+	TextView progressText;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		/* Init crittercism */
-		JSONObject crittercismConfig = new JSONObject();
-		try
-		{
-			crittercismConfig.put("includeVersionCode", true);
-			crittercismConfig.put("shouldCollectLogcat", true);
-		}
-		catch (JSONException je){}
-
-		Crittercism.init(getApplicationContext(), Config.CRITTERCISM_APP_ID, crittercismConfig);
-		Crittercism.setUsername("user-mobile-No-notset");
-		// instantiate metadata json object
-		JSONObject metadata = new JSONObject();
-		// add other user and app related metadata
-		try {
-			metadata.put("mobile_no", "notset");
-			metadata.put("name", "not-set");
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		// send metadata to crittercism (asynchronously)
-		Crittercism.setMetadata(metadata);
-		DatabaseManager.init(this);
 		UserPreferences.getInstance(true, this);
 		setContentView(R.layout.activity_main);
 		
+		progressText = (TextView) findViewById(R.id.progressText);
 		//First We see progress bar. Not even for a milli second if the response is received before that
 		final ProgressBar progress = (ProgressBar) findViewById(com.android.lonoti.R.id.mainProgress);
 		
-		//Now see if the the current Authcode is valid - if yes Dont show login screen but show Home Screen
+		// init Crittercism
+		initCrittercism();
 		
-		//Get existing auth code
+		// initi DB
+		initDatabase();
 		
-		//Check Auth status by sending a server request with current Authcode and user details
-		//That will call doTask() which will start the appropriate Activity:Home or login 
+		checkUserAndPhoneNumber();
 		
-		//form and fire request
-		/*LonotiAsyncServiceRequest checkLogin = new LonotiAsyncServiceRequest(this);
-		checkLogin.execute(String serverURL, String httpMethod, int timeout, boolean isLonotiRequest, String payload);
-		*/
-		//For now I will call do Task here Once server code is integrated, remove following line.
-		
-		/* TODO: Move the GCM registritaion process to appropriate location
-		 * // Make sure the device has the proper dependencies.*/
-        GCMRegistrar.checkDevice(this);
-        // Make sure the manifest was properly set
-        GCMRegistrar.checkManifest(this);
-        
-        regId = GCMRegistrar.getRegistrationId(MainActivity.this);
-        // Check if regid already presents
-        if (regId.equals("")) {
-        	// Registration is not present, register now with GCM
-        	GCMRegistrar.register(MainActivity.this, SENDER_ID);
-        	
-        	doTask("SUCCESS");
-        	
-        }else{
-        	
-        	String AuthCode = UserPreferences.getPreferences().getString("authCode", Config.DEFAULT_AUTH_CODE);
-            
-            if(!AuthCode.equals(Config.DEFAULT_AUTH_CODE)){
-            	
-            	doTask("SUCCESS");
-            	
-            }else{
-            	
-            	LonotiAsyncServiceRequest asyncRequet = new LonotiAsyncServiceRequest(this);
-            	
-            	asyncRequet.execute(Config.LOGIN_URI, "POST", 30000, true, "email=" + Config.DUMMY_USER +  "&password=" + Config.DUMMY_PASSWORD);
-            	
-            }
-        	
-        }
-        
-        
-        
-		/*final Button button = (Button) findViewById(R.id.loginButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            	
-            	String regId = GCMRegistrar.getRegistrationId(MainActivity.this);
-            	
-                Intent intent = new Intent(getBaseContext(), HomeActivity.class);
-                finish();
-                startActivity(intent);
-            }
-        });
-        final Button register = (Button) findViewById(R.id.registerButton);
-        register.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), HomeActivity.class);
-                startActivity(intent);
-            	TextView reEnter = (TextView) findViewById(R.id.textReEnterPassword);
-            	if(reEnter.getVisibility() == View.GONE){
-            		reEnter.setVisibility(View.VISIBLE);
-            	}else{
-            		//here we would actually call the login server urls 
-            		//and call the below Activity once we get a successful response
-            		//Some where in between we will send the regID we acquire from the
-            		//GCM to indicate that this is the users Android device.
-            		
-            		String regId = GCMRegistrar.getRegistrationId(MainActivity.this);
-                	// Check if regid already presents
-                    if (regId.equals("")) {
-                        // Registration is not present, register now with GCM
-                        GCMRegistrar.register(MainActivity.this, SENDER_ID);
-                    } else {
-                    	//TODO: uncomment below line after testing
-                    	//GCMRegistrar.unregister(MainActivity.this);
-                        // Device is already registered on GCM so update it to server while registering
-                        if (GCMRegistrar.isRegisteredOnServer(MainActivity.this)) {
-                            // This pnly means that the regID is set on server also. so don't relay on this
-                            Toast.makeText(getApplicationContext(), "Already registered with GCM with regid" + regId, Toast.LENGTH_LONG).show();
-                        } else {
-                            //TODO: NOt logged In do some thing?                
-                        }
-                    }
-            		
-            		Intent intent = new Intent(getBaseContext(), HomeActivity.class);
-            		finish();
-                    startActivity(intent);
-            	}
-            }
-        });
-*/	}
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -233,5 +130,110 @@ public class MainActivity extends FragmentActivity  implements ILonotiTaskListen
 	}
 	
 //TODO: Implement destroyer
+	
+	private void initCrittercism(){
+		/* Init crittercism */
+		
+		progressText.setText("Initializing Crittercism");
+		
+		JSONObject crittercismConfig = new JSONObject();
+		try
+		{
+			crittercismConfig.put("includeVersionCode", true);
+			crittercismConfig.put("shouldCollectLogcat", true);
+		}
+		catch (JSONException je){}
 
+		Crittercism.init(getApplicationContext(), Config.CRITTERCISM_APP_ID, crittercismConfig);
+		Crittercism.setUsername("user-mobile-No-notset");
+		// instantiate metadata json object
+		JSONObject metadata = new JSONObject();
+		// add other user and app related metadata
+		try {
+			metadata.put("mobile_no", "notset");
+			metadata.put("name", "not-set");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// send metadata to crittercism (asynchronously)
+		Crittercism.setMetadata(metadata);
+	}
+
+	private void initDatabase(){
+		
+		progressText.setText("Initializing Database");
+		
+		DatabaseManager.init(this);
+	}
+	
+	private void checkUserAndPhoneNumber(){
+		
+		progressText.setText("Checking User");
+		
+		UserData userData = DatabaseManager.getInstance().getUserData();
+		
+		if(userData == null){
+			
+			/*TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE); 
+	        String number = tm.getLine1Number();*/
+	        
+			FragmentManager fm = getSupportFragmentManager();
+			GetDetailsDialogFragment gdf = new GetDetailsDialogFragment();
+			gdf.show(fm, "fragment_get_details");
+			
+		}else{
+			
+			this.userData = userData;
+			initGCM();
+		}
+		
+	}
+
+	@Override
+	public void doListenerTask(Object data) {
+		// TODO Auto-generated method stub
+		UserData userData = (UserData) data;
+		DatabaseManager.getInstance().createUserData(userData);
+		
+		this.userData = userData;
+		initGCM();
+		
+	}
+	
+	
+	private void initGCM(){
+		
+		progressText.setText("Initializing GCM");
+		
+		GCMRegistrar.checkDevice(this);
+        // Make sure the manifest was properly set
+        GCMRegistrar.checkManifest(this);
+        
+        regId = GCMRegistrar.getRegistrationId(MainActivity.this);
+        // Check if regid already presents
+        if (regId.equals("")) {
+        	// Registration is not present, register now with GCM
+        	GCMRegistrar.register(MainActivity.this, SENDER_ID);
+        	
+        	doTask("SUCCESS");
+        	
+        }else{
+        	
+        	String AuthCode = UserPreferences.getPreferences().getString("authCode", Config.DEFAULT_AUTH_CODE);
+            
+            if(!AuthCode.equals(Config.DEFAULT_AUTH_CODE)){
+            	
+            	doTask("SUCCESS");
+            	
+            }else{
+            	
+            	LonotiAsyncServiceRequest asyncRequet = new LonotiAsyncServiceRequest(this);
+            	
+            	asyncRequet.execute(Config.LOGIN_URI, "POST", 30000, true, "email=" + this.userData.getEmail() +  "&password=" + Config.DUMMY_PASSWORD);
+            	
+            }
+        }
+	}
 }

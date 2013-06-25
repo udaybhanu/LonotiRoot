@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <EditText
+        android:id="@+id/getDetailsEmailEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/getDetailsPhoneNumberEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="phone" />
+
+    <TextView
+        android:id="@+id/getDetailsTermsAndConditions"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Terms and Condition"
+        android:textAppearance="?android:attr/textAppearanceSmall" 
+        android:clickable="true"
+        android:textAlignment="center"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/getDetailsAgreeAndContinueButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Agree and Continue" 
+        android:textAlignment="center"
+        android:gravity="center"/>
+
+</LinearLayout>

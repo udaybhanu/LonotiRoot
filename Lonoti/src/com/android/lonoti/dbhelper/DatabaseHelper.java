@@ -10,6 +10,7 @@ import android.util.EventLog.Event;
 import android.util.Log;
 
 import com.android.lonoti.R;
+import com.android.lonoti.bom.UserData;
 import com.android.lonoti.bom.payload.Friend;
 import com.android.lonoti.bom.payload.FriendEvents;
 import com.android.lonoti.bom.payload.Location;
@@ -36,6 +37,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	private Dao<Friend, Long> friendDao = null;
 	private Dao<Location, Integer> locationDao = null;
 	private Dao<FriendEvents, Integer> friendEventsDao = null;
+	private Dao<UserData, Integer> userDataDao = null;
 
 	public DatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -96,7 +98,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		if (dbClasses == null) {
 			dbClasses = new ArrayList<Class>();
 			// Populate the Class list representing each of the tables
-			Class[] tmpClassList = new Class[] { Location.class, LonotiEvent.class, Friend.class, FriendEvents.class } ; //TimeEvent.class,
+			Class[] tmpClassList = new Class[] { Location.class, LonotiEvent.class, Friend.class, FriendEvents.class, UserData.class } ; //TimeEvent.class,
 					//Payload.class};
 			for (Class clazz : tmpClassList) {
 				dbClasses.add(clazz);
@@ -148,5 +150,19 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			}
 		}
 		return friendEventsDao;
+	}
+	
+	public Dao<UserData, Integer> getUserDataDao(){
+		
+		if (userDataDao == null) {
+			try {
+				userDataDao = getDao(UserData.class);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return userDataDao;
+		
 	}
 }

@@ -35,5 +35,15 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@+id/progressText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mainProgress"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="Loading ..."
+        android:textAppearance="?android:attr/textAppearanceMedium" />
  
 </RelativeLayout>
