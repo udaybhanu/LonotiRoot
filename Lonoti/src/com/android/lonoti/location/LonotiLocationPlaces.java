@@ -51,6 +51,43 @@ public class LonotiLocationPlaces {
         return resultList;
 	}
 	
+	public static List<HashMap<String, String>> getContentHashMap(String key) throws NetworkException{
+		
+		List<HashMap<String, String>> resultList = null;
+		
+		try 
+		{	
+			String jsonResults = LonotiServerManager.callServer(SERVER_URL_AUTOCOMPLETE + "?input="+ URLEncoder.encode(key, "utf8") +"&sensor=false&key=AIzaSyBy_w78WsrAv96w81nDRjl2LLWX2ob09wQ", "GET", 45000, false, null, false);
+			JSONObject jsonObj = new JSONObject(jsonResults.toString());
+	        JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
+	        
+	        // Extract the Place descriptions from the results
+	        resultList = new ArrayList<HashMap<String, String>>();
+	        for (int i = 0; i < predsJsonArray.length(); i++) {
+	        	
+	        	HashMap<String, String> place = new HashMap<String, String>();
+	        	JSONObject jPlace = predsJsonArray.getJSONObject(i);
+	        	place.put("description", jPlace.getString("description"));
+	        	place.put("_id", jPlace.getString("id"));
+	        	place.put("reference", jPlace.getString("reference"));
+	        	resultList.add(place);
+	        	
+	        }
+	        
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			throw new NetworkException("UnsupportedEncodingException (LonotiLocationPlaces)", e);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			throw new NetworkException("JSONException : Invalid Response (LonotiLocationPlaces)", e);
+		} catch (NetworkException e) {
+			// TODO: handle exception
+			throw new NetworkException("NetworkException (LonotiLocationPlaces)", e);
+		}
+		
+        return resultList;
+	}
+	
 	public static Map<String, String> getContentMap(String key) throws NetworkException{
 		
 		Map<String, String> results = null;

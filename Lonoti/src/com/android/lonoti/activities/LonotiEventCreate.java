@@ -69,19 +69,21 @@ import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
 import android.widget.Toast;
 
-public class LonotiEventCreate extends Activity implements OnItemClickListener{
+public class LonotiEventCreate extends Activity{
 
-	private PlacesAutoCompleteAdapter adapter;
+	//private PlacesAutoCompleteAdapter adapter;
 	
 	TextView nameText;
 	TextView descriptionText;
-	AutoCompleteTextView autoComplete;
+	//AutoCompleteTextView autoComplete;
 	Location location;
 	String reference;
 	Spinner eventType;
 	Button dateButton;
 	Button timeButton;
-	LinearLayout locationLayout;
+	//LinearLayout locationLayout;
+	LinearLayout locationLayout2;
+	LinearLayout locationDescLayout;
 	Calendar c = Calendar.getInstance();
 	int checkedItem;
 	Activity activity;
@@ -93,9 +95,11 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 	Spinner templateListView;
 	Map<String, String> TemplateMap;
 	EditText messageText;
-	
+	Button selectMapButton;
 	Button buttonSave;
 	Button buttonCancel;
+	TextView locationDescTextView;
+	TextView locationDetailsTextView;
 	
 	boolean[] mDaysOfWeek = {false, false, false, false, false, false, false};
 	
@@ -107,14 +111,19 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 		nameText = (TextView) findViewById(R.id.editText1);
 		descriptionText = (TextView) findViewById(R.id.editText2);
 		
-		locationLayout = (LinearLayout) findViewById(R.id.location_layout);
+		locationLayout2 = (LinearLayout) findViewById(R.id.location_layout);
+		locationDescLayout = (LinearLayout) findViewById(R.id.location_det_layout);
+		locationDescTextView = (TextView) findViewById(R.id.locationDescTextView);
+		locationDetailsTextView = (TextView) findViewById(R.id.locationDetailsTextView);
+		
+		selectMapButton = (Button) findViewById(R.id.selectMapButton);
 		
 		eventType = (Spinner) findViewById(R.id.spinner_event_type);
 		
 		if("Time Based".equals(eventType.getSelectedItem())){
-			locationLayout.setVisibility(View.GONE);
+			locationLayout2.setVisibility(View.GONE);
 		}else{
-			locationLayout.setVisibility(View.VISIBLE);
+			locationLayout2.setVisibility(View.VISIBLE);
 		}
 		
 		eventType.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -125,10 +134,10 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 				// TODO Auto-generated method stub
 				String type = arg0.getSelectedItem().toString();
 				if("Time Based".equals(type)){
-					locationLayout.setVisibility(View.GONE);
+					locationLayout2.setVisibility(View.GONE);
 				}
 				else{
-					locationLayout.setVisibility(View.VISIBLE);
+					locationLayout2.setVisibility(View.VISIBLE);
 				}
 			}
 
@@ -138,11 +147,6 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 				
 			}
 		});
-		
-		autoComplete = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView1);
-		adapter = new PlacesAutoCompleteAdapter(this, R.layout.auto_complete_item);
-		autoComplete.setAdapter(adapter);
-		autoComplete.setOnItemClickListener(this);
 		
 		dateButton = (Button) findViewById(R.id.button_date_select);
 		timeButton = (Button) findViewById(R.id.button_time_select);
@@ -254,17 +258,19 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 			}
 		});
 		
-		Button selectLocationFromMap = (Button) findViewById(R.id.button_select_location);
-		
-		selectLocationFromMap.setOnClickListener(new OnClickListener() {
+		selectMapButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(getApplicationContext(), MapSelectActivity.class);
-				intent.putExtra("lonoti_location_latitude", location.getLat());
-				intent.putExtra("lonoti_location_longitude", location.getLon());
-				intent.putExtra("lonoti_location_description", location.getLocdescrition());
+				if(location != null) {
+				
+					intent.putExtra("lonoti_location_latitude", location.getLat());
+					intent.putExtra("lonoti_location_longitude", location.getLon());
+					intent.putExtra("lonoti_location_description", location.getLocdescrition());
+					
+				}
 				startActivityForResult(intent, 1);
 			}
 		});
@@ -281,8 +287,6 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 				builder.setTitle("Repeat");
 				
 				//builder.setSingleChoiceItems(Config.values, checkedItem, null);
-				
-				
 				
 				builder.setMultiChoiceItems(
 						 Config.values, mDaysOfWeek,
@@ -447,10 +451,9 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 		
 		if(!"Time Based".equals(eventType.getSelectedItem())){
 			
-			String locationString = autoComplete.getText().toString();
-			if(locationString.length() == 0){
+			if(location == null){
 				invalidData = true;
-				autoComplete.setError("Location is required");
+				selectMapButton.setError("Location is required");
 			}else{
 				
 				payload.setType(1);
@@ -459,6 +462,7 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 				serLocation.setLon(Double.valueOf(location.getLon()));
 				serLocation.setDistance(Integer.parseInt(location.getDistance()));
 				payload.setLocation(serLocation);
+				
 			}
 			
 		}else{
@@ -608,15 +612,21 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 		// TODO Auto-generated method stub
 		
 		if(resultCode != RESULT_CANCELED){
-			Double lattitude = data.getDoubleExtra("lonoti_location_latitude", 0.00);
-			Double longitude = data.getDoubleExtra("lonoti_location_longitude", 0.00);
+			
+			String lattitude = data.getStringExtra("lonoti_location_latitude");
+			String longitude = data.getStringExtra("lonoti_location_longitude");
 			String description = data.getStringExtra("lonoti_location_description");
 			String radius = data.getStringExtra("lonoti_location_radius");
-			location.setLat(String.valueOf(lattitude));
-			location.setLon(String.valueOf(longitude));
+			location = new Location();
+			location.setLat(lattitude);
+			location.setLon(longitude);
 			location.setLocdescrition(description);
 			location.setDistance(radius);
-			autoComplete.setText(description);
+			
+			locationDescTextView.setText(description);
+			locationDetailsTextView.setText(lattitude + ", " + longitude + " ( "+ radius +" ) ");
+			locationDescLayout.setVisibility(View.VISIBLE);
+			
 		}
 		
 		super.onActivityResult(requestCode, resultCode, data);
@@ -629,34 +639,6 @@ public class LonotiEventCreate extends Activity implements OnItemClickListener{
 		return true;
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-		String str = (String) arg0.getItemAtPosition(arg2);
-		reference = adapter.getResults().get(str);
-		
-		AsyncTask<Object, Integer, Long> execute = new LonotiAsyncServiceRequest(new ILonotiTaskListener() {
-			
-			@Override
-			public void doTask(String response) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void doTask(Location loc) {
-				// TODO Auto-generated method stub
-				location = loc;
-				location.setReference(reference);
-			}
-		});
-		
-		execute.execute("REFERENCE_SEARCH", reference);
-		
-        //Toast.makeText(this, reference, Toast.LENGTH_SHORT).show();
-	}
-
-	
 	/*@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		// TODO Auto-generated method stub

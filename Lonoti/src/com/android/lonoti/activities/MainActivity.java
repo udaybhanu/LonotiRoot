@@ -186,7 +186,8 @@ public class MainActivity extends FragmentActivity  implements ILonotiTaskListen
 		}else{
 			
 			this.userData = userData;
-			initGCM();
+			//initGCM();
+			doTask("SUCCESS");
 		}
 		
 	}
