@@ -211,11 +211,11 @@ public class MainActivity extends FragmentActivity  implements ILonotiTaskListen
         // Make sure the manifest was properly set
         GCMRegistrar.checkManifest(this);
         
-        regId = GCMRegistrar.getRegistrationId(MainActivity.this);
+        regId = GCMRegistrar.getRegistrationId(getApplicationContext());
         // Check if regid already presents
         if (regId.equals("")) {
         	// Registration is not present, register now with GCM
-        	GCMRegistrar.register(MainActivity.this, SENDER_ID);
+        	GCMRegistrar.register(getApplicationContext(), SENDER_ID);
         	
         	doTask("SUCCESS");
         	
