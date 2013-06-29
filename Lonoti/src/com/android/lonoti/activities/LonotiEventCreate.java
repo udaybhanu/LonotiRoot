@@ -13,10 +13,13 @@ import java.util.Map;
 import com.android.lonoti.Config;
 import com.android.lonoti.R;
 import com.android.lonoti.activies.map.MapSelectActivity;
+import com.android.lonoti.adapter.ContactAdapter;
 import com.android.lonoti.adapter.PlacesAutoCompleteAdapter;
+import com.android.lonoti.adapter.data.Contact;
 import com.android.lonoti.bom.payload.Location;
 import com.android.lonoti.bom.payload.LonotiEvent;
 import com.android.lonoti.bom.payload.TimeEvent;
+import com.android.lonoti.customview.ContactsMultiAutoCompleteView;
 import com.android.lonoti.network.LonotiAsyncServiceRequest;
 import com.android.lonoti.network.ILonotiTaskListener;
 import com.android.lonoti.network.data.LonotiEventServerData;
@@ -28,6 +31,10 @@ import com.google.gson.Gson;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract.Contacts;
+import android.provider.ContactsContract.CommonDataKinds.Email;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.provider.ContactsContract.Contacts.Data;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -38,9 +45,11 @@ import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -62,6 +71,7 @@ import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MultiAutoCompleteTextView.CommaTokenizer;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -100,6 +110,8 @@ public class LonotiEventCreate extends Activity{
 	Button buttonCancel;
 	TextView locationDescTextView;
 	TextView locationDetailsTextView;
+	ContactsMultiAutoCompleteView contactsMultiAutoCompleteView1;
+	List<Contact> contacts;
 	
 	boolean[] mDaysOfWeek = {false, false, false, false, false, false, false};
 	
@@ -115,6 +127,17 @@ public class LonotiEventCreate extends Activity{
 		locationDescLayout = (LinearLayout) findViewById(R.id.location_det_layout);
 		locationDescTextView = (TextView) findViewById(R.id.locationDescTextView);
 		locationDetailsTextView = (TextView) findViewById(R.id.locationDetailsTextView);
+		
+		//Setting the contacts
+		contactsMultiAutoCompleteView1 = (ContactsMultiAutoCompleteView) findViewById(R.id.contactsMultiAutoCompleteView1);
+		
+		if(contacts == null){
+			contacts = getContacts();
+		}
+		
+		contactsMultiAutoCompleteView1.setAdapter(new ContactAdapter(this, R.layout.number_item_layout, contacts));
+		contactsMultiAutoCompleteView1.setTokenizer(new CommaTokenizer());
+		//---End of setting the contacts
 		
 		selectMapButton = (Button) findViewById(R.id.selectMapButton);
 		
@@ -361,6 +384,41 @@ public class LonotiEventCreate extends Activity{
 	}
 
 	
+	private List<Contact> getContacts() {
+		// TODO Auto-generated method stub
+		List<Contact> contacts = new ArrayList<Contact>();
+		
+		Cursor c = getContentResolver().query(android.provider.ContactsContract.Data.CONTENT_URI, new String[] {Phone.NUMBER, Contacts.DISPLAY_NAME, Phone.TYPE}, 
+				Data.MIMETYPE + "='" + Phone.CONTENT_ITEM_TYPE + "'", null, null);
+		
+		for(c.moveToFirst(); !c.isAfterLast(); c.moveToNext()){
+			Contact contact = new Contact();
+			contact.setNumber(c.getString(c.getColumnIndex(Phone.NUMBER)));
+			contact.setName(c.getString(c.getColumnIndex(Contacts.DISPLAY_NAME)));
+			contact.setType(getPhoneType(c.getInt(c.getColumnIndex(Phone.TYPE))));
+			System.out.println(contact.getNumber() + " " + contact.getName() + " " + contact.getType());
+			contacts.add(contact);
+		}
+		
+		return contacts;
+	}
+
+
+	private String getPhoneType(int type) {
+		// TODO Auto-generated method stub
+		switch (type) {
+		case Phone.TYPE_HOME:
+			return "Home";
+		case Phone.TYPE_WORK:
+			return "Work";
+		case Phone.TYPE_MOBILE:
+			return "Mobile";
+		default:
+			return "";
+		}
+	}
+
+
 	protected void saveEvent() {
 		// TODO Auto-generated method stub
 		
@@ -476,11 +534,31 @@ public class LonotiEventCreate extends Activity{
 		payload.setTime(serverTime);
 
 		
-		LonotiEventServerFriends friend = data.new LonotiEventServerFriends();
+		/*LonotiEventServerFriends friend = data.new LonotiEventServerFriends();
 		friend.setEmail("mrudhu@gmail.com");
-		friend.setPhone_number("9177023915");
+		friend.setPhone_number("9177023915");*/
 		
-		payload.getFriends().add(friend);
+		if(contactsMultiAutoCompleteView1.getText().length() == 0){
+			
+			invalidData = true;
+			contactsMultiAutoCompleteView1.setError("Enter atleast one contact");
+			
+		}else{
+			
+			List<String> enteredContacts = resolveContacts(contactsMultiAutoCompleteView1.getText().toString());
+			
+			for(String enteredContact:enteredContacts){
+				
+				LonotiEventServerFriends friend = data.new LonotiEventServerFriends();
+				friend.setEmail("");
+				friend.setPhone_number(enteredContact);
+				payload.getFriends().add(friend);
+				
+			}
+			
+		}
+		
+		//payload.getFriends().add(friend);
 
 		
 		if(invalidData){
@@ -533,6 +611,27 @@ public class LonotiEventCreate extends Activity{
 	}
 	
 	
+	private List<String> resolveContacts(String text) {
+		// TODO Auto-generated method stub
+		
+		List<String> enteredContacts = new ArrayList<String>();
+		
+		for(String eachContact:text.split(",")){
+			
+			if(eachContact.length() > 2){
+				
+				String number = eachContact.substring(eachContact.indexOf(">") + 1);
+				number = number.replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
+				enteredContacts.add(number);
+				
+			}
+			
+		}
+		
+		return enteredContacts;
+	}
+
+
 	private String convertRepeat(){
 		
 		StringBuffer sb = new StringBuffer();

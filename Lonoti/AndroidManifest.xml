@@ -19,6 +19,8 @@
     <!-- GCM requires a Google account. -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    
     <!-- Crittercism logs -->
     <uses-permission android:name="android.permission.READ_LOGS"/>
     <uses-permission android:name="android.permission.GET_TASKS"/>
