@@ -43,7 +43,7 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults filterResults = new FilterResults();
-                if (constraint != null) {
+                if (constraint != null && constraint.length() > 4) {
                     // Retrieve the autocomplete results.
                     
 						//resultList = LonotiLocationPlaces.getContent(constraint.toString());

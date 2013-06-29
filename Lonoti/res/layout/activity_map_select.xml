@@ -9,10 +9,50 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MapSelectActivity" >
 
-	<LinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
         android:orientation="horizontal">
+
+        <!-- <com.android.lonoti.customview.LocationAutoCompleteTextView
+            android:id="@+id/mapAutoSearchAutoCompleteTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Search" 
+         >
+        	<requestFocus />
+            
+        </com.android.lonoti.customview.LocationAutoCompleteTextView> -->
+        
+        <AutoCompleteTextView
+            android:id="@+id/mapAutoSearchAutoCompleteTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Search" 
+         >
+        	<requestFocus />
+            
+        </AutoCompleteTextView>
+        <!-- 
+    	<ImageButton
+	        android:id="@+id/searchButtonMap"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:src="@drawable/search_glass"
+	        android:layout_weight="1"/>
+         -->
+    </LinearLayout>
+
+	<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:id="@+id/location_radius_latlong_layout">
         
         <EditText
             android:id="@+id/location_text"
