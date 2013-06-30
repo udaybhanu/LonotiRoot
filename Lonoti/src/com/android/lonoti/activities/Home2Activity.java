@@ -186,7 +186,7 @@ public class Home2Activity extends FragmentActivity {
 		
         Button mapBtn = new Button(this);
         String name = getActiveLocationEvent().getName();
-        mapBtn.setText(name.substring(0, name.length() > 8 ? 8 : name.length()));
+        mapBtn.setText(name.substring(0, name.length() > 13 ? 13 : name.length()));
         // Setting the Buttons OnClickListener
         mapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,7 +200,7 @@ public class Home2Activity extends FragmentActivity {
         
         Button otherBtn = new Button(this);
         String name2 = getActiveTimeEvent().getName();
-        otherBtn.setText(name2.substring(0, name2.length() > 8 ? 8 : name2.length()));
+        otherBtn.setText(name2.substring(0, name2.length() > 13 ? 13 : name2.length()));
         // Setting the Buttons OnClickListener
         otherBtn.setOnClickListener(new View.OnClickListener() {
             @Override
