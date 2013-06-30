@@ -52,7 +52,7 @@ public class EventActivity extends ListFragment {
 		// TODO Auto-generated method stub
 		//View v = (View) menu.findItem(R.id.add).getActionView();
 		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.envent, menu);
+		inflater.inflate(R.menu.event, menu);
 	}
 	
 	@Override

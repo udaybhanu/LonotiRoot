@@ -710,7 +710,7 @@ public class LonotiEventCreate extends Activity{
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		
-		if(resultCode != RESULT_CANCELED){
+		if(resultCode == RESULT_OK){
 			
 			String lattitude = data.getStringExtra("lonoti_location_latitude");
 			String longitude = data.getStringExtra("lonoti_location_longitude");

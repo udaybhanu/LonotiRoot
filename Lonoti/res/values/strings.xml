@@ -28,5 +28,6 @@
     <string name="ok_string">OK</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_calander">CalanderActivity</string>
 
 </resources>
