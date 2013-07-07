@@ -11,11 +11,15 @@ import android.content.Intent;
 import android.telephony.TelephonyManager;
 import android.util.Log;
  
+import com.android.lonoti.Config;
+import com.android.lonoti.R;
+import com.android.lonoti.UserPreferences;
 import com.android.lonoti.activities.MainActivity;
 import com.android.lonoti.bom.UserData;
 import com.android.lonoti.dbhelper.DatabaseManager;
 import com.android.lonoti.exception.NetworkException;
 import com.android.lonoti.network.LonotiServerManager;
+import com.android.lonoti.gcm.*;
 import com.google.android.gcm.GCMBaseIntentService;
  
 import static com.android.lonoti.Config.SENDER_ID;
@@ -73,12 +77,28 @@ public class GCMIntentService extends GCMBaseIntentService {
      * */
     @Override
     protected void onMessage(Context context, Intent intent) {
-        String message = intent.getExtras().getString("event");
-        Log.i(TAG, "Received message : " + message);
+    	String collapse_key = intent.getStringExtra("collapse_key");
+    	//if collapse key exists it is a one-time message
+        GcmCollapseKey key = GcmCollapseKey.getKey(collapse_key);
+        if(key != null)
+        {
+        switch (key)
+        {
+        case GET_LOCATION:
+        	break;
+        case SYNC_DB:
+        	break;
+        	default:
+        		//no valid collapse key.
+        		//Do internal implementation
+        	break;	
+        }
+        }
  
         // notifies user
         //TODO : Also do other stuff based on the message
-        generateNotification(context, message);
+        Log.e(TAG,intent.getExtras().toString());
+        generateNotification(context, ""+ intent.getExtras().toString());
     }
  
     /**
