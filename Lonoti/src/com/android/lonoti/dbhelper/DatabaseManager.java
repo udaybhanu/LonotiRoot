@@ -34,6 +34,10 @@ public class DatabaseManager {
         return helper;
     }
     
+    public void getWritableDatabase(){
+    	helper.getWritableDatabase();
+    }
+    
     public void createLonotiEvent(LonotiEvent event)
     {
     	try {
@@ -41,6 +45,28 @@ public class DatabaseManager {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+    }
+    
+    public void updateLonotiEvent(LonotiEvent event)
+    {
+    	try {
+			getHelper().getLonotiEventDao().update(event);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    public LonotiEvent getLonotiEvent(Integer eventId)
+    {
+    	try {
+    		LonotiEvent event = getHelper().getLonotiEventDao().queryForId(eventId);
+    		return event;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
 		}
     }
  
@@ -155,6 +181,28 @@ public class DatabaseManager {
 		}
 		
 		return null;
+	}
+	
+	public Friend getFriendByNumber(String number){
+		
+		try {
+			List<Friend> friends = getHelper().getFriendDao().queryForEq("mobileNumber", number);
+			
+			if(friends.size() == 1){
+				
+				return friends.get(0);
+				
+			}else{
+				return null;
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+		
 	}
 	
 }

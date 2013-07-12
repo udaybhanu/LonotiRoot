@@ -47,6 +47,12 @@ public class ContactsMultiAutoCompleteView extends MultiAutoCompleteTextView imp
 		//addTextChangedListener(textWatcher);
 
 	}
+	
+	public void updateText(){
+		
+		setChips(null);
+		
+	}
 
 	private TextWatcher textWatcher = new TextWatcher() {
 		

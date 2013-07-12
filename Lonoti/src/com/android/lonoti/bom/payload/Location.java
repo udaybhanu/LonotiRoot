@@ -5,10 +5,10 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import com.j256.ormlite.field.ForeignCollectionField;
 
-@DatabaseTable(tableName = "locations")
+@DatabaseTable(tableName = "llocations")
 public class Location {
 
-	@DatabaseField(generatedId = true)
+	@DatabaseField(generatedId = true, allowGeneratedIdInsert=true)
 	private Integer id;
 	@DatabaseField
 	private String lat;

@@ -10,16 +10,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.android.lonoti.Config;
 import com.android.lonoti.R;
 import com.android.lonoti.activies.map.MapSelectActivity;
 import com.android.lonoti.adapter.ContactAdapter;
 import com.android.lonoti.adapter.PlacesAutoCompleteAdapter;
 import com.android.lonoti.adapter.data.Contact;
+import com.android.lonoti.bom.payload.Friend;
+import com.android.lonoti.bom.payload.FriendEvents;
 import com.android.lonoti.bom.payload.Location;
 import com.android.lonoti.bom.payload.LonotiEvent;
 import com.android.lonoti.bom.payload.TimeEvent;
 import com.android.lonoti.customview.ContactsMultiAutoCompleteView;
+import com.android.lonoti.dbhelper.DatabaseManager;
 import com.android.lonoti.network.LonotiAsyncServiceRequest;
 import com.android.lonoti.network.ILonotiTaskListener;
 import com.android.lonoti.network.data.LonotiEventServerData;
@@ -112,6 +118,7 @@ public class LonotiEventCreate extends Activity{
 	TextView locationDetailsTextView;
 	ContactsMultiAutoCompleteView contactsMultiAutoCompleteView1;
 	List<Contact> contacts;
+	LonotiEvent event;
 	
 	boolean[] mDaysOfWeek = {false, false, false, false, false, false, false};
 	
@@ -120,8 +127,28 @@ public class LonotiEventCreate extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lonoti_event_create);
 		activity = this;
+		
+		if(getIntent().hasExtra("event_id")){
+			
+			Integer event_id = getIntent().getIntExtra("event_id", -1);
+			
+			if(event_id != -1){
+				
+				event = DatabaseManager.getInstance().getLonotiEvent(event_id);
+				
+			}
+			
+		}
+		
 		nameText = (TextView) findViewById(R.id.editText1);
+		
 		descriptionText = (TextView) findViewById(R.id.editText2);
+		
+		if(event != null){
+			
+			nameText.setText(event.getName());
+			descriptionText.setText(event.getDescription());
+		}
 		
 		locationLayout2 = (LinearLayout) findViewById(R.id.location_layout);
 		locationDescLayout = (LinearLayout) findViewById(R.id.location_det_layout);
@@ -139,9 +166,19 @@ public class LonotiEventCreate extends Activity{
 		contactsMultiAutoCompleteView1.setTokenizer(new CommaTokenizer());
 		//---End of setting the contacts
 		
+		//contactsMultiAutoCompleteView1.setText(event.get)
+		
 		selectMapButton = (Button) findViewById(R.id.selectMapButton);
 		
 		eventType = (Spinner) findViewById(R.id.spinner_event_type);
+		
+		if(event != null){
+			if(event.getLocation() == null){
+				eventType.setSelection(0);
+			}else{
+				eventType.setSelection(1);
+			}
+		}
 		
 		if("Time Based".equals(eventType.getSelectedItem())){
 			locationLayout2.setVisibility(View.GONE);
@@ -173,6 +210,11 @@ public class LonotiEventCreate extends Activity{
 		
 		dateButton = (Button) findViewById(R.id.button_date_select);
 		timeButton = (Button) findViewById(R.id.button_time_select);
+		
+		if(event != null){
+			dateButton.setText(Config.dateFormat.format(event.getTime().getNotDate()));
+			timeButton.setText(event.getTime().getDuration()/60 + ":" + event.getTime().getDuration()%60);
+		}
 		
 		datePickerLayout = (LinearLayout) activity.findViewById(R.id.datePickerLayout);
 		timePickerLayout = (LinearLayout) activity.findViewById(R.id.timePickerLayout);
@@ -372,6 +414,11 @@ public class LonotiEventCreate extends Activity{
 		
 		
 		buttonSave = (Button) findViewById(R.id.button_event_save);
+		
+		if(event != null){
+			buttonSave.setText("Update");
+		}
+		
 		buttonSave.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -380,6 +427,12 @@ public class LonotiEventCreate extends Activity{
 				saveEvent();
 			}
 		});
+		
+		if(event != null){
+			
+			includeImageSpans(event.getMessage());
+			
+		}
 		
 	}
 
@@ -426,10 +479,9 @@ public class LonotiEventCreate extends Activity{
 		
 		boolean invalidData = false;
 		
-		LonotiEvent event = new LonotiEvent();
+		event = new LonotiEvent();
 		TimeEvent time = new TimeEvent();
-		
-		
+		event.setEnabled(true);
 		LonotiEventServerData data = new LonotiEventServerData();
 		
 		data.setAction(0);
@@ -452,8 +504,8 @@ public class LonotiEventCreate extends Activity{
 		String description = descriptionText.getText().toString();
 		
 		if(description.length() == 0){
-			invalidData = true;
-			descriptionText.setError("Description is required");
+			//invalidData = true;
+			//descriptionText.setError("Description is required");
 		}else{
 			event.setDescription(description);
 		}
@@ -480,10 +532,11 @@ public class LonotiEventCreate extends Activity{
 			try {
 				Date dateExtracted = Config.dateFormat.parse(date);
 				serverTime.setDate_sec(dateExtracted.getTime());
-				
+				time.setNotDate(dateExtracted);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				invalidData = true;
+				dateButton.setError("Date is invalid");
 			}
 		}
 		
@@ -496,14 +549,17 @@ public class LonotiEventCreate extends Activity{
 				Date dateExtracted = Config.timeFormat.parse(timedata);
 				Integer timeInminutes = dateExtracted.getHours()*60 + dateExtracted.getMinutes();
 				serverTime.setTrigger_time(timeInminutes);
+				time.setDuration(timeInminutes);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				invalidData = true;
+				timeButton.setError("Time is invalid");
 			}
 		}
 		
 		if(!finalTime.equals("")){
 			
+			event.setTime(time);
 			
 		}
 		
@@ -520,7 +576,7 @@ public class LonotiEventCreate extends Activity{
 				serLocation.setLon(Double.valueOf(location.getLon()));
 				serLocation.setDistance(Integer.parseInt(location.getDistance()));
 				payload.setLocation(serLocation);
-				
+				event.setLocation(location);
 			}
 			
 		}else{
@@ -538,6 +594,8 @@ public class LonotiEventCreate extends Activity{
 		friend.setEmail("mrudhu@gmail.com");
 		friend.setPhone_number("9177023915");*/
 		
+		DatabaseManager.getInstance().createLonotiEvent(event);
+		
 		if(contactsMultiAutoCompleteView1.getText().length() == 0){
 			
 			invalidData = true;
@@ -553,6 +611,21 @@ public class LonotiEventCreate extends Activity{
 				friend.setEmail("");
 				friend.setPhone_number(enteredContact);
 				payload.getFriends().add(friend);
+				
+				Friend friendFromDB = DatabaseManager.getInstance().getFriendByNumber(enteredContact);
+				
+				if(friendFromDB == null){
+					
+					friendFromDB = new Friend();
+					friendFromDB.setEmailId("");
+					friendFromDB.setMobileNumber(enteredContact);
+					friendFromDB.setIsAppUser(true);
+					DatabaseManager.getInstance().createFriend(friendFromDB);
+					
+				}
+				
+				FriendEvents newFriendEvent = new FriendEvents(event, friendFromDB);
+				DatabaseManager.getInstance().createFriendEvents(newFriendEvent);
 				
 			}
 			
@@ -587,6 +660,18 @@ public class LonotiEventCreate extends Activity{
 			@Override
 			public void doTask(String response) {
 				// TODO Auto-generated method stub
+				System.out.println("Response : " + response);
+				
+				JSONObject jobj;
+				try {
+					jobj = new JSONObject(response);
+					String server_event_id = jobj.getString("event_id");
+					event.setServer_event_id(server_event_id);
+					DatabaseManager.getInstance().updateLonotiEvent(event);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 			}
 		});
@@ -594,13 +679,13 @@ public class LonotiEventCreate extends Activity{
 		String url = Config.EVENT_NEW_URL;
 		String serverPayload = null;
 		
-			System.out.println(new String(Base64.encodeToString(jsonRequest.getBytes(), Base64.NO_WRAP)));
+			//System.out.println(new String(Base64.encodeToString(jsonRequest.getBytes(), Base64.NO_WRAP)));
 			serverPayload = new String(Base64.encodeToString(jsonRequest.getBytes(), Base64.NO_WRAP));
 			//serverPayload = URLEncoder.encode(new String(Base64.encodeToString(jsonRequest.getBytes(), Base64.DEFAULT)), "UTF-8");
 		
 		asyncRequet.execute(url, "POST", 30000, true, "data=" + serverPayload);
 		
-		Toast.makeText(this, "Event Saved", 400);
+		//Toast.makeText(this, "Event Saved", 400);
 		
 		Intent intent = null;
 		intent = new Intent(this, Home2Activity.class);
@@ -618,7 +703,7 @@ public class LonotiEventCreate extends Activity{
 		
 		for(String eachContact:text.split(",")){
 			
-			if(eachContact.length() > 2){
+			if(eachContact.length() > 2 && eachContact.indexOf(">") != -1 && eachContact.indexOf("<") != -1){
 				
 				String number = eachContact.substring(eachContact.indexOf(">") + 1);
 				number = number.replace("(", "").replace(")", "").replace(" ", "").replace("-", "");
@@ -675,7 +760,6 @@ public class LonotiEventCreate extends Activity{
 		messageText.setText(ssb);
 		
 	}
-	
 	
 	private void addLocationImage(){
 		

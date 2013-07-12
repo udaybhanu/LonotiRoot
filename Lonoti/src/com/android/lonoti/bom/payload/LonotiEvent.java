@@ -26,9 +26,9 @@ public class LonotiEvent extends Payload{
 	private String name;
 	@DatabaseField
 	private String description;
-	@DatabaseField( foreign = true, foreignAutoRefresh=true)
+	@DatabaseField( foreign = true, foreignAutoRefresh=true, foreignAutoCreate = true)
 	private Location location;
-	@DatabaseField( foreign = true, foreignAutoRefresh=true)
+	@DatabaseField( foreign = true, foreignAutoRefresh=true, foreignAutoCreate = true)
 	private TimeEvent time;
 	
 	@DatabaseField
@@ -36,6 +36,28 @@ public class LonotiEvent extends Payload{
 	
 	@ForeignCollectionField
     public ForeignCollection<FriendEvents> friendEvents;
+	
+	@DatabaseField
+	private boolean isEnabled;
+	
+	@DatabaseField
+	private String server_event_id;
+	
+	public void setServer_event_id(String server_event_id) {
+		this.server_event_id = server_event_id;
+	}
+	
+	public String getServer_event_id() {
+		return server_event_id;
+	}
+	
+	public boolean isEnabled() {
+		return isEnabled;
+	}
+	
+	public void setEnabled(boolean isEnabled) {
+		this.isEnabled = isEnabled;
+	}
 	
 	//If the values here are to be associated with the values in Friends table
 	//We will have to use Foreign Object.

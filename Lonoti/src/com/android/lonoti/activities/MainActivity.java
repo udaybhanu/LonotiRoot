@@ -85,7 +85,7 @@ public class MainActivity extends FragmentActivity  implements ILonotiTaskListen
 	        String number = tm.getLine1Number();
 			try {
 				
-				response = LonotiServerManager.callServer(Config.REGISTER_URL, "POST", 30000, true, "email=" + Config.DUMMY_USER + "&password=" + Config.DUMMY_PASSWORD + "&registration_id=" + regId + "&phone_number=" + number, true);
+				response = LonotiServerManager.callServer(Config.REGISTER_URL, "POST", 30000, true, "email=" + this.userData.getEmail() + "&password=" + Config.DUMMY_PASSWORD + "&registration_id=" + regId + "&phone_number=" + number, true);
 				
 			} catch (NetworkException e) {
 				// TODO Auto-generated catch block
@@ -166,6 +166,8 @@ public class MainActivity extends FragmentActivity  implements ILonotiTaskListen
 		progressText.setText("Initializing Database");
 		
 		DatabaseManager.init(this);
+		//DatabaseManager.getInstance().getWritableDatabase();
+		
 	}
 	
 	private void checkUserAndPhoneNumber(){
@@ -187,7 +189,19 @@ public class MainActivity extends FragmentActivity  implements ILonotiTaskListen
 			
 			this.userData = userData;
 			initGCM();
-			//doTask("SUCCESS");
+			/*String AuthCode = UserPreferences.getPreferences().getString("authCode", Config.DEFAULT_AUTH_CODE);
+	        
+	        if(!AuthCode.equals(Config.DEFAULT_AUTH_CODE)){
+	        	
+	        	doTask("SUCCESS");
+	        	
+	        }else{
+	        	
+	        	LonotiAsyncServiceRequest asyncRequet = new LonotiAsyncServiceRequest(this);
+	        	
+	        	asyncRequet.execute(Config.LOGIN_URI, "POST", 30000, true, "email=" + Config.DUMMY_USER +  "&password=" + Config.DUMMY_PASSWORD);
+	        	
+	        }*/
 		}
 		
 	}
@@ -200,6 +214,7 @@ public class MainActivity extends FragmentActivity  implements ILonotiTaskListen
 		
 		this.userData = userData;
 		initGCM();
+		//doTask("SUCCESS");
 		
 	}
 	

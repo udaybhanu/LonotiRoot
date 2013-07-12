@@ -7,7 +7,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "friends")
+@DatabaseTable(tableName = "lfriends")
 public class Friend implements Serializable{
 
 	/**
@@ -18,7 +18,7 @@ public class Friend implements Serializable{
 	@DatabaseField(generatedId = true, allowGeneratedIdInsert=true)
 	private Integer id;
 	
-	@DatabaseField
+	@DatabaseField(unique = true)
 	private String mobileNumber;
 	@DatabaseField
 	private Boolean isAppUser;

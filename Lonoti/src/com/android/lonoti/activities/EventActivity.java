@@ -1,12 +1,15 @@
 package com.android.lonoti.activities;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.android.lonoti.R;
 import com.android.lonoti.R.id;
 import com.android.lonoti.R.layout;
 import com.android.lonoti.adapter.EventListAdapter;
 import com.android.lonoti.adapter.data.EventRowData;
+import com.android.lonoti.bom.payload.LonotiEvent;
+import com.android.lonoti.dbhelper.DatabaseManager;
 
 import android.os.Bundle;
 import android.annotation.SuppressLint;
@@ -79,12 +82,23 @@ public class EventActivity extends ListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		// TODO Auto-generated method stub
 		//Log.
-		super.onListItemClick(l, v, position, id);
+		
 	}
 	
 	private ArrayList<EventRowData> getEventRowList(){
 		ArrayList<EventRowData> eventRowList = new ArrayList<EventRowData>();
-		EventRowData row1 = new EventRowData("One", false);
+		
+		List<LonotiEvent> events = DatabaseManager.getInstance().getAllLonotiEvents();
+		
+		for(LonotiEvent event : events){
+			
+			EventRowData row1 = new EventRowData(event.getName(), false);
+			row1.setEvent(event);
+			eventRowList.add(row1);
+			
+		}
+		
+		/*EventRowData row1 = new EventRowData("One", false);
 		EventRowData row2 = new EventRowData("Two", false);
 		EventRowData row3 = new EventRowData("Three", false);
 		EventRowData row4 = new EventRowData("Four", false);
@@ -95,7 +109,8 @@ public class EventActivity extends ListFragment {
 		eventRowList.add(row3);
 		eventRowList.add(row4);
 		eventRowList.add(row5);
-		eventRowList.add(row6);
+		eventRowList.add(row6);*/
+		
 		return eventRowList;
 	}
 

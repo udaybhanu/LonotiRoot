@@ -98,7 +98,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 		if (dbClasses == null) {
 			dbClasses = new ArrayList<Class>();
 			// Populate the Class list representing each of the tables
-			Class[] tmpClassList = new Class[] { Location.class, LonotiEvent.class, Friend.class, FriendEvents.class, UserData.class } ; //TimeEvent.class,
+			Class[] tmpClassList = new Class[] { Location.class,  TimeEvent.class, LonotiEvent.class, Friend.class, FriendEvents.class, UserData.class } ; //TimeEvent.class,
 					//Payload.class};
 			for (Class clazz : tmpClassList) {
 				dbClasses.add(clazz);

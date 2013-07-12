@@ -65,7 +65,7 @@ public class RequestCreator {
 				if(timeEventObj != null){
 					TimeEvent event = new TimeEvent();
 					event.setNotDate(Calendar.getInstance().getTime());
-					event.setDuration(timeEventObj.get("offset").toString());
+					//event.setDuration(timeEventObj.get("offset").toString());
 					((LonotiEvent)payload).setTime(event);
 				}
 				JSONArray friendsObj = (JSONArray) payloadObj.get("friends");
@@ -128,7 +128,7 @@ public class RequestCreator {
 		event.setLocation(location);
 		TimeEvent time = new TimeEvent();
 		time.setNotDate(Calendar.getInstance().getTime());
-		time.setDuration("dur");
+		time.setDuration(20);
 		event.setTime(time);
 		event.setName("name");
 		event.setDescription("Description");

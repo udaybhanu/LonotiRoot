@@ -7,15 +7,15 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "lTimeEvent")
+@DatabaseTable(tableName = "ltimeevent")
 public class TimeEvent {
 
-	@DatabaseField(generatedId = true)
+	@DatabaseField(generatedId = true, allowGeneratedIdInsert=true)
 	private Integer id;
 	@DatabaseField
 	private Date notDate;
 	@DatabaseField
-	private String duration;
+	private Integer duration;
 
 	@ForeignCollectionField
     public ForeignCollection<LonotiEvent> levents;
@@ -32,11 +32,11 @@ public class TimeEvent {
 		this.notDate = notDate;
 	}
 	
-	public String getDuration() {
+	public Integer getDuration() {
 		return duration;
 	}
 	
-	public void setDuration(String duration) {
+	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
 	
