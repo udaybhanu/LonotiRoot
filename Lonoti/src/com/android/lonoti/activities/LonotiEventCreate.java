@@ -63,6 +63,7 @@ import android.text.style.ImageSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -413,7 +414,7 @@ public class LonotiEventCreate extends Activity{
 		});
 		
 		
-		buttonSave = (Button) findViewById(R.id.button_event_save);
+		/*buttonSave = (Button) findViewById(R.id.button_event_save);
 		
 		if(event != null){
 			buttonSave.setText("Update");
@@ -426,7 +427,7 @@ public class LonotiEventCreate extends Activity{
 				// TODO Auto-generated method stub
 				saveEvent();
 			}
-		});
+		});*/
 		
 		if(event != null){
 			
@@ -472,7 +473,7 @@ public class LonotiEventCreate extends Activity{
 	}
 
 
-	protected void saveEvent() {
+	protected boolean saveEvent() {
 		// TODO Auto-generated method stub
 		
 		// Save into DB
@@ -574,7 +575,7 @@ public class LonotiEventCreate extends Activity{
 				LonotiEventServerLocation serLocation = data.new LonotiEventServerLocation();
 				serLocation.setLat(Double.valueOf(location.getLat()));
 				serLocation.setLon(Double.valueOf(location.getLon()));
-				serLocation.setDistance(Integer.parseInt(location.getDistance()));
+				serLocation.setDistance(Integer.parseInt(location.getDistance().replace("Km", "")));
 				payload.setLocation(serLocation);
 				event.setLocation(location);
 			}
@@ -593,8 +594,9 @@ public class LonotiEventCreate extends Activity{
 		/*LonotiEventServerFriends friend = data.new LonotiEventServerFriends();
 		friend.setEmail("mrudhu@gmail.com");
 		friend.setPhone_number("9177023915");*/
+		if(!invalidData){
+			DatabaseManager.getInstance().createLonotiEvent(event);
 		
-		DatabaseManager.getInstance().createLonotiEvent(event);
 		
 		if(contactsMultiAutoCompleteView1.getText().length() == 0){
 			
@@ -630,13 +632,14 @@ public class LonotiEventCreate extends Activity{
 			}
 			
 		}
+		}
 		
 		//payload.getFriends().add(friend);
 
 		
 		if(invalidData){
 			Toast.makeText(this, "Invalid Data", 400);
-			return;
+			return false;
 		}
 		
 		
@@ -692,7 +695,7 @@ public class LonotiEventCreate extends Activity{
 		this.startActivity(intent);
 		this.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
 		this.finish();
-		
+		return true;
 	}
 	
 	
@@ -820,6 +823,21 @@ public class LonotiEventCreate extends Activity{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.lonoti_event_create, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		// TODO Auto-generated method stub
+		
+		if(R.id.item_save == item.getItemId()){
+			
+			saveEvent();
+			return true;
+			
+		}else{
+			return super.onMenuItemSelected(featureId, item);
+		}
+		
 	}
 
 	/*@Override
